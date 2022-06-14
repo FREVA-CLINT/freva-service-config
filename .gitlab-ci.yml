@@ -16,6 +16,7 @@ build:solr:
                        --cleanup
                        --skip-unused-stages=true
                        --whitelist-var-run=false
+                       --context dir://solr
                        --dockerfile solr/Dockerfile
                        --destination $CI_REGISTRY_IMAGE/freva-solr:$VERSION
     tags:
@@ -38,7 +39,8 @@ build:mysql:
                        --cleanup
                        --skip-unused-stages=true
                        --whitelist-var-run=false
-                       --dockerfile solr/Dockerfile
+                       --context dir://mysql
+                       --dockerfile mysql/Dockerfile
                        --destination $CI_REGISTRY_IMAGE/freva-db:$VERSION
     tags:
         - docker, specific

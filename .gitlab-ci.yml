@@ -3,8 +3,6 @@ stages:
 
 build:solr:
     stage: build
-    variables:
-        VERSION: "0.0.1"
     image:
         name: gcr.io/kaniko-project/executor:debug
         entrypoint: [""]
@@ -18,7 +16,7 @@ build:solr:
                        --whitelist-var-run=false
                        --context dir://solr
                        --dockerfile solr/Dockerfile
-                       --destination $CI_REGISTRY_IMAGE/freva-solr:$VERSION
+                       --destination $CI_REGISTRY_IMAGE/freva-solr:latest
     tags:
         - docker, specific
     rules:
@@ -26,8 +24,6 @@ build:solr:
         - if: "$CI_COMMIT_BRANCH != 'master'"
 build:mysql:
     stage: build
-    variables:
-        VERSION: "0.0.1"
     image:
         name: gcr.io/kaniko-project/executor:debug
         entrypoint: [""]
@@ -41,7 +37,7 @@ build:mysql:
                        --whitelist-var-run=false
                        --context dir://mysql
                        --dockerfile mysql/Dockerfile
-                       --destination $CI_REGISTRY_IMAGE/freva-db:$VERSION
+                       --destination $CI_REGISTRY_IMAGE/freva-db:latest
     tags:
         - docker, specific
     rules:

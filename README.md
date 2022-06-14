@@ -13,8 +13,8 @@ they can be pulled for usage in production or development mode.
 The images are automatically build and stored at a container registry. The urls
 for the `docker pull` command or the corresponding `docker-compose` directive are:
 
-- `foo.bar/freva-solr:latest` for the Freva *solr* image
-- `foo.bar/freva-db:latest` for the Freva *mysql* image
+- `registry.gitlab.dkrz.de/freva/freva-service-config/freva-solr:latest ` for the Freva *solr* image
+- `registry.gitlab.dkrz.de/freva/freva-service-config/freva-db:latest` for the Freva *mysql* image
 
 The containers automatically creating new MySQL tables (if not existing)
 and solr cores (if not existing). The following environment variables should be

@@ -9,23 +9,37 @@ managed_schema.xml file should be done here.
 An automated pipeline builds the images and pushes them to the DKRZ registry where
 they can be pulled for usage in production or development mode.
 
-## Using the build images
-The images are automatically build and stored at a container registry. The urls
-for the `docker pull` command or the corresponding `docker-compose` directive are:
+## Using the config files when creating images
 
-- `registry.gitlab.dkrz.de/freva/freva-service-config/freva-solr:latest ` for the Freva *solr* image
-- `registry.gitlab.dkrz.de/freva/freva-service-config/freva-db:latest` for the Freva *mysql* image
+Usage of the configurations within the docker solr and MySQL containers should
+be realised by adding the files via *volumes* to the container during creation.
 
-The containers automatically creating new MySQL tables (if not existing)
-and solr cores (if not existing). The following environment variables should be
+For MySQL this could be:
+
+```
+docker run -v path/to/freva-service-config/mysql/create-users.sql:/docker-entrypoint-initdb.d/001_create_users.sql:ro
+```
+
+For apache solr two files are need:
+
+```
+docker run -v path/to/freva-service-config/solr/managed_schema.xml:/opt/solr/managed_schema.xml:ro \
+       path/to/freva-service-config/sorl/create_cores.sh:/docker-entrypoint-initdb.d/create_cores.sh:ro
+```
+
+If you need a simple backup functionality, you can add the `daily_backup.sh` script in the same manner.
+
+Setting up the volumes as outlined above will instruct the containers to
+automatically creating new MySQL tables (if not existing)
+and solr cores (if not existing).
+
+The following environment variables should be
 considered when starting the **MySQL** container:
 
 - `MYSQL_ROOT_PASSWORD`: MySQL root password for the container.
 - `MYSQL_USER`: 'normal' MySQL user, Freva will be connecting to the DB with this user name.
 - `MYSQL_PASSWORD`: password for the 'normal' MySQL user name.
 - `MYSQL_DATABASE`: the name of the database where all Freva related tables are stored.
-- `NUM_BACKUPS`: number of backups to keep (default: 7). See backup for more details.
-- `BACKUP_DIR`: location of the MySQL backup (default: /var/lib/mysql/backup). See backup for more details.
 
 For the **apache solr** container consider the following environment variables:
 
@@ -35,11 +49,11 @@ For the **apache solr** container consider the following environment variables:
 
 
 ## Backup of data
-Each of the above mentioned container ships with a backup script which can be
-used in production mode. The backup scripts are located in `/usr/local/bin/daily_backup`
-*within* the container. A simple crontab to create backups on the machine running
-the container could look the following:
+If you added the `daily_backup.sh` files via a volume to the container you can
+setup simple crontab to create backups on the *host* machine running
+the container. A simple crontab example could like like this.
 
 ```
-docker exec container-name /usr/local/bin/daily_backup
+# m    h    dom   mon    dow      command
+0      5    *     *      *        docker exec container-name bash -c /usr/local/bin/daily_backup
 ```

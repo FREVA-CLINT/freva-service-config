@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: freva
 -- ------------------------------------------------------
--- Server version	8.0.29-0ubuntu0.22.04.2
+-- Server version	8.0.29
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,6 +19,7 @@
 -- Table structure for table `auth_group`
 --
 
+DROP TABLE IF EXISTS `auth_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_group` (
@@ -33,6 +34,7 @@ CREATE TABLE `auth_group` (
 -- Table structure for table `auth_group_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_group_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_group_permissions` (
@@ -50,6 +52,7 @@ CREATE TABLE `auth_group_permissions` (
 -- Table structure for table `auth_permission`
 --
 
+DROP TABLE IF EXISTS `auth_permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_permission` (
@@ -67,6 +70,7 @@ CREATE TABLE `auth_permission` (
 -- Table structure for table `auth_user`
 --
 
+DROP TABLE IF EXISTS `auth_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_user` (
@@ -90,6 +94,7 @@ CREATE TABLE `auth_user` (
 -- Table structure for table `auth_user_groups`
 --
 
+DROP TABLE IF EXISTS `auth_user_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_user_groups` (
@@ -107,6 +112,7 @@ CREATE TABLE `auth_user_groups` (
 -- Table structure for table `auth_user_user_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_user_user_permissions` (
@@ -124,6 +130,7 @@ CREATE TABLE `auth_user_user_permissions` (
 -- Table structure for table `django_admin_log`
 --
 
+DROP TABLE IF EXISTS `django_admin_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_admin_log` (
@@ -145,21 +152,11 @@ CREATE TABLE `django_admin_log` (
 -- Table structure for table `django_content_type`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_content_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `app_label` varchar(100) NOT NULL,
-  `model` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Table structure for table `django_flatpage`
 --
 
+DROP TABLE IF EXISTS `django_flatpage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_flatpage` (
@@ -179,6 +176,7 @@ CREATE TABLE `django_flatpage` (
 -- Table structure for table `django_flatpage_sites`
 --
 
+DROP TABLE IF EXISTS `django_flatpage_sites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_flatpage_sites` (
@@ -196,6 +194,7 @@ CREATE TABLE `django_flatpage_sites` (
 -- Table structure for table `django_migrations`
 --
 
+DROP TABLE IF EXISTS `django_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_migrations` (
@@ -211,6 +210,7 @@ CREATE TABLE `django_migrations` (
 -- Table structure for table `django_session`
 --
 
+DROP TABLE IF EXISTS `django_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_session` (
@@ -226,6 +226,7 @@ CREATE TABLE `django_session` (
 -- Table structure for table `django_site`
 --
 
+DROP TABLE IF EXISTS `django_site`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_site` (
@@ -240,6 +241,7 @@ CREATE TABLE `django_site` (
 -- Table structure for table `externaluser_externaluser`
 --
 
+DROP TABLE IF EXISTS `externaluser_externaluser`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `externaluser_externaluser` (
@@ -262,6 +264,7 @@ CREATE TABLE `externaluser_externaluser` (
 -- Table structure for table `hindcast_frontend_hindcastevaluation`
 --
 
+DROP TABLE IF EXISTS `hindcast_frontend_hindcastevaluation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hindcast_frontend_hindcastevaluation` (
@@ -284,6 +287,7 @@ CREATE TABLE `hindcast_frontend_hindcastevaluation` (
 -- Table structure for table `history_configuration`
 --
 
+DROP TABLE IF EXISTS `history_configuration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `history_configuration` (
@@ -303,6 +307,7 @@ CREATE TABLE `history_configuration` (
 -- Table structure for table `history_history`
 --
 
+DROP TABLE IF EXISTS `history_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `history_history` (
@@ -328,6 +333,7 @@ CREATE TABLE `history_history` (
 -- Table structure for table `history_historytag`
 --
 
+DROP TABLE IF EXISTS `history_historytag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `history_historytag` (
@@ -346,6 +352,7 @@ CREATE TABLE `history_historytag` (
 -- Table structure for table `history_result`
 --
 
+DROP TABLE IF EXISTS `history_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `history_result` (
@@ -363,6 +370,7 @@ CREATE TABLE `history_result` (
 -- Table structure for table `history_resulttag`
 --
 
+DROP TABLE IF EXISTS `history_resulttag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `history_resulttag` (
@@ -378,6 +386,7 @@ CREATE TABLE `history_resulttag` (
 -- Table structure for table `plugins_parameter`
 --
 
+DROP TABLE IF EXISTS `plugins_parameter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `plugins_parameter` (
@@ -397,6 +406,7 @@ CREATE TABLE `plugins_parameter` (
 -- Table structure for table `plugins_toolpullrequest`
 --
 
+DROP TABLE IF EXISTS `plugins_toolpullrequest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `plugins_toolpullrequest` (
@@ -414,6 +424,7 @@ CREATE TABLE `plugins_toolpullrequest` (
 -- Table structure for table `plugins_version`
 --
 
+DROP TABLE IF EXISTS `plugins_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `plugins_version` (
@@ -432,6 +443,7 @@ CREATE TABLE `plugins_version` (
 -- Table structure for table `solr_usercrawl`
 --
 
+DROP TABLE IF EXISTS `solr_usercrawl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `solr_usercrawl` (
@@ -456,4 +468,4 @@ CREATE TABLE `solr_usercrawl` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-14 15:50:50
+-- Dump completed on 2022-06-16 12:25:31

@@ -3,7 +3,7 @@
 <schema name="file_system" version="1.6">
   <uniqueKey>file</uniqueKey>
   <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
-  <fieldType name="rdate" class="solr.DateRangeField" docValues="true"/>
+  <fieldType name="rdate" class="solr.DateRangeField"/>
   <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
   <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
   <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>

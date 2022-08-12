@@ -52,6 +52,6 @@
   <field name="variable" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="dataset" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="file_name" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="time" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="time_range" type="rdate" stored="true" indexed="true"/>
+  <field name="global_model" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="time" type="rdate" stored="true" indexed="true"/>
 </schema>

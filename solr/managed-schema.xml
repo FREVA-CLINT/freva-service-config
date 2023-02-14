@@ -39,7 +39,7 @@
   If not it won't work for entries not being versioned at all -->
   <field name="version" type="version" stored="false" indexed="true" default="-1"/>
   <field name="file_no_version" type="string" stored="false" indexed="true"/>
-
+  <field name="fs_type" type="string" stored="true" indexed="true" default="posix"/>
   <field name="project" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="product" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="institute" type="text_general" stored="true" indexed="true" multiValued="true"/>

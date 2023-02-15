@@ -39,6 +39,7 @@
   If not it won't work for entries not being versioned at all -->
   <field name="version" type="version" stored="false" indexed="true" default="-1"/>
   <field name="file_no_version" type="string" stored="false" indexed="true"/>
+  <field name="fs_type" type="string" indexed="true" stored="false" default="posix"/>
 
   <field name="project" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="product" type="text_general" stored="true" indexed="true" multiValued="true"/>
@@ -52,6 +53,5 @@
   <field name="variable" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="dataset" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="file_name" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="global_model" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="time" type="rdate" stored="true" indexed="true"/>
 </schema>

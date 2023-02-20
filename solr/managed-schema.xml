@@ -3,6 +3,7 @@
 <schema name="file_system" version="1.6">
   <uniqueKey>file</uniqueKey>
   <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
+  <fieldType name="rdate" class="solr.DateRangeField"/>
   <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
   <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
   <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
@@ -38,6 +39,19 @@
   If not it won't work for entries not being versioned at all -->
   <field name="version" type="version" stored="false" indexed="true" default="-1"/>
   <field name="file_no_version" type="string" stored="false" indexed="true"/>
-  <field name="_root_" type="string" indexed="false" stored="false" docValues="false"/>
-  <dynamicField name="*" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="fs_type" type="string" indexed="true" stored="false" default="posix"/>
+
+  <field name="project" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="product" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="institute" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="model" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="experiment" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="time_frequency" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="realm" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="cmor_table" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="ensemble" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="variable" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="dataset" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="file_name" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="time" type="rdate" stored="true" indexed="true"/>
 </schema>

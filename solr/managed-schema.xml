@@ -67,6 +67,6 @@
   <field name="grid_label" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="domain" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="rcm_model" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
+  <field name="rcm_name" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="rcm_version" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
 </schema>

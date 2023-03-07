@@ -12,7 +12,7 @@
   <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
   <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
   <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>
-  <fieldType name="extra_facet" class="sorl.StrField" multiValued="true" sortMissingLast="true"/>
+  <fieldType name="extra_facet" class="solr.StrField" multiValued="true" sortMissingLast="true"/>
   <fieldType name="version" class="solr.TextField" >
     <analyzer>
         <charFilter class="solr.PatternReplaceCharFilterFactory" pattern="^v"/>

@@ -59,7 +59,6 @@
   <field name="mip_era" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="activity_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="institution_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="source_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="experiment_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
   <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />

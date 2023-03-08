@@ -56,22 +56,22 @@
   <field name="file_name" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="time" type="rdate" stored="true" indexed="true"/>
   <!-- now lets define extra facets that are not displayd by default. -->
-  <field name="mip_era" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="activity_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="institution_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="source_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="experiment_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="table_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="variable_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="grid_label" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="domain" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="rcm_name" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="rcm_version" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="level_type" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="time_reduction" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="simulation_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="grid_id" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
-  <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="ture" />
+  <field name="mip_era" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="activity_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="institution_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="source_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="experiment_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="table_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="variable_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="grid_label" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="domain" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="rcm_name" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="rcm_version" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="level_type" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="time_reduction" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="simulation_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="grid_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="true" />
 </schema>

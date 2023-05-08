@@ -12,7 +12,6 @@
   <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
   <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
   <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>
-  <fieldType name="extra_facet" class="solr.StrField" multiValued="true" sortMissingLast="true"/>
   <fieldType name="version" class="solr.TextField" >
     <analyzer>
         <charFilter class="solr.PatternReplaceCharFilterFactory" pattern="^v"/>
@@ -20,7 +19,7 @@
     </analyzer>
   </fieldType>
 
-  <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+  <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100" multiValued="true">
     <analyzer type="index">
       <tokenizer class="solr.KeywordTokenizerFactory"/>
       <filter class="solr.LowerCaseFilterFactory"/>
@@ -30,6 +29,18 @@
       <filter class="solr.LowerCaseFilterFactory"/>
     </analyzer>
   </fieldType>
+
+  <fieldType name="extra_facet" class="solr.TextField" positionIncrementGap="100" multiValued="true">
+    <analyzer type="index">
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+
 
   <field name="_version_" type="plong" indexed="true" stored="true"/>
   <field name="file" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
@@ -63,6 +74,7 @@
   <field name="experiment_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
   <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
   <field name="table_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
+  <field name="frequency" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
   <field name="variable_id" type="extra_facet" stored="true" indexed="true" multiValued="true" />
   <field name="grid_label" type="extra_facet" stored="true" indexed="true" multiValued="true" />
   <field name="domain" type="extra_facet" stored="true" indexed="true" multiValued="true" />

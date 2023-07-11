@@ -35,22 +35,6 @@
     </analyzer>
   </fieldType>
 
-  <fieldType name="extra_facet" class="solr.TextField" positionIncrementGap="100" multiValued="true">
-    <analyzer type="index">
-      <tokenizer class="solr.KeywordTokenizerFactory"/>
-      <filter class="solr.LowerCaseFilterFactory"/>
-      <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
-      <filter class="solr.FlattenGraphFilterFactory"/>
-    </analyzer>
-    <analyzer type="query">
-      <tokenizer class="solr.KeywordTokenizerFactory"/>
-      <filter class="solr.LowerCaseFilterFactory"/>
-      <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
-      <filter class="solr.FlattenGraphFilterFactory"/>
-    </analyzer>
-  </fieldType>
-
-
   <field name="_version_" type="plong" indexed="true" stored="true"/>
   <field name="file" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <field name="uri" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
@@ -61,74 +45,31 @@
   If not it won't work for entries not being versioned at all -->
   <field name="version" type="version" stored="false" indexed="true" default="-1"/>
   <!-- Define the standard facet names -->
+  <field name="cmor_table" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="dataset" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="experiment" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="ensemble" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="file_name" type="string" stored="true" indexed="true" multiValued="true"/>
   <field name="file_no_version" type="string" stored="false" indexed="true"/>
   <field name="fs_type" type="string" indexed="true" stored="false" default="posix"/>
-  <field name="project" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="product" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="grid_label" type="text_general" stored="true" indexed="true" multiValued="true" default="gn"/>
   <field name="institute" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="model" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="experiment" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="time_frequency" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="project" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="product" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="realm" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="cmor_table" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="ensemble" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="variable" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="dataset" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="file_name" type="string" stored="true" indexed="true" multiValued="true"/>
   <field name="time" type="rdate" stored="true" indexed="true"/>
   <field name="time_aggregation" type="text_general" stored="true" indexed="true" multiValued="true" default="avg"/>
-
-  <!-- define alias facet names -->
-  <field name="activity_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="activity_id" source="product"/>
-
-  <field name="domain" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="domain" source="product"/>
-
-  <field name="experiment_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="experiment_id" source="experiment"/>
-
-  <field name="frequency" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="frequency" source="time_frequency"/>
-
-  <field name="institution" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="institution" source="institute"/>
-
-  <field name="institution_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="institution_id" source="institute"/>
-
-  <field name="mip_era" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="mip_era" source="project"/>
-
-  <field name="member_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="member_id" source="ensemble"/>
-
-  <field name="model_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="model_id" source="model"/>
-
-  <field name="simulation_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="simulation_id" source="experiment"/>
-
-  <field name="source_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="source_id" source="model"/>
-
-  <field name="table_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="table_id" source="cmor_table"/>
-
-  <field name="time_reduction" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="time_reduction" source="time_aggregation"/>
-
-  <field name="variable_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <copyField dest="variable_id" source="variable"/>
+  <field name="time_frequency" type="text_general" stored="true" indexed="true" multiValued="true"/>
 
   <!-- define extra facet name that are not displayd by default. -->
-  <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="true" />
-  <field name="rcm_name" type="extra_facet" stored="true" indexed="true" multiValued="true" />
-  <field name="rcm_version" type="extra_facet" stored="true" indexed="true" multiValued="true" />
-  <field name="grid_label" type="extra_facet" stored="true" indexed="true" multiValued="true" default="gn"/>
-  <field name="grid_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <field name="level_type" type="extra_facet" stored="true" indexed="true" multiValued="true" default="2d"/>
-  <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="true" default="nc"/>
+  <field name="driving_model" type="text_general" stored="true" indexed="true" multiValued="true" />
+  <field name="format" type="text_general" stored="true" indexed="true" multiValued="true" default="nc"/>
+  <field name="grid_id" type="text_general" stored="true" indexed="true" multiValued="true"/>
+  <field name="level_type" type="text_general" stored="true" indexed="true" multiValued="true" default="2d"/>
+  <field name="rcm_name" type="text_general" stored="true" indexed="true" multiValued="true" />
+  <field name="rcm_version" type="text_general" stored="true" indexed="true" multiValued="true" />
 
 
 </schema>

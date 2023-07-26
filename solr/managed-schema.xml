@@ -61,12 +61,12 @@
   <!-- we need this to search for latest version.
   If not it won't work for entries not being versioned at all -->
   <field name="version" type="version" stored="false" indexed="true" default="-1"/>
-  <field name="file_name" type="string" stored="true" indexed="true" multiValued="true"/>
-  <field name="file_no_version" type="string" stored="false" indexed="true"/>
+  <field name="file_name" type="string" stored="true" indexed="true" multiValued="false"/>
+  <field name="file_no_version" type="string" stored="false" indexed="false"/>
   <!-- Define the standard facet names -->
   <field name="experiment" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="ensemble" type="text_general" stored="true" indexed="true" multiValued="true"/>
-  <field name="fs_type" type="text_general" indexed="true" stored="false" default="posix"/>
+  <field name="fs_type" type="text_general" indexed="true" stored="true" default="posix" multiValued="false"/>
   <field name="grid_label" type="text_general" stored="true" indexed="true" multiValued="true" default="gn"/>
   <field name="institute" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="model" type="text_general" stored="true" indexed="true" multiValued="true"/>
@@ -80,9 +80,9 @@
 
   <!-- define extra facet name that are not displayd by default. -->
   <field name="cmor_table" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
-  <field name="dataset" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
+  <field name="dataset" type="extra_facet" stored="true" indexed="true" multiValued="false"/>
   <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="true" />
-  <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="true" default="nc"/>
+  <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="false" default="nc"/>
   <field name="grid_id" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
   <field name="level_type" type="extra_facet" stored="true" indexed="true" multiValued="true" default="2d"/>
   <field name="rcm_name" type="extra_facet" stored="true" indexed="true" multiValued="true" />

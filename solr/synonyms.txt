@@ -14,3 +14,6 @@ day, days, dy => 1day
 1yr, yrc, yrclim, yearly, year, yearc, yearclim, 1y => yr
 decc, decclim => dec
 fix, fixed => fx
+avg, average => mean
+pt, point, instant, instantaneous => inst
+agg, aggregated, accumulated => acc

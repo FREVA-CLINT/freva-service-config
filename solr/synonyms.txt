@@ -31,5 +31,5 @@ yrpt, ptyr, yr_pt, pt_yr => yrpt
 decc, decclim => dec
 fix, fixed => fx
 avg, average, mean => mean
-pt, point, instant, inst, instantaneous => point
+pt, point, instant, inst, instantaneous => inst
 agg, aggregated, accumulated => acc

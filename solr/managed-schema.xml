@@ -75,7 +75,7 @@
   <field name="realm" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="variable" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="time" type="rdate" stored="true" indexed="true"/>
-  <field name="time_aggregation" type="text_general" stored="true" indexed="true" multiValued="true" default="avg"/>
+  <field name="time_aggregation" type="text_general" stored="true" indexed="true" multiValued="true" default="mean"/>
   <field name="time_frequency" type="text_general" stored="true" indexed="true" multiValued="true"/>
 
   <!-- define extra facet name that are not displayd by default. -->

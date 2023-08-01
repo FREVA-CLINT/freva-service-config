@@ -11,5 +11,5 @@ for file in $(ls ${BACKUP_DIR}/backup-*.sql.gz);do
         rm $file
     fi
 done
-mysqldump -u root -h localhost -p"${MYSQL_ROOT_PASSWORD}" --all-databases | gzip -c -9 -q > $backup_f
+mariadb-dump -u root -h localhost -p"${MYSQL_ROOT_PASSWORD}" --all-databases | gzip -c -9 -q > $backup_f
 chown mysql:mysql ${backup_f}

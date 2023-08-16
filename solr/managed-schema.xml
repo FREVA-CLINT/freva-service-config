@@ -64,6 +64,7 @@
   <field name="file_name" type="string" stored="true" indexed="true" multiValued="false"/>
   <field name="file_no_version" type="string" stored="false" indexed="false"/>
   <!-- Define the standard facet names -->
+  <field name="cmor_table" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="experiment" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="ensemble" type="text_general" stored="true" indexed="true" multiValued="true"/>
   <field name="fs_type" type="text_general" indexed="true" stored="true" default="posix" multiValued="false"/>
@@ -79,7 +80,6 @@
   <field name="time_frequency" type="text_general" stored="true" indexed="true" multiValued="true"/>
 
   <!-- define extra facet name that are not displayd by default. -->
-  <field name="cmor_table" type="extra_facet" stored="true" indexed="true" multiValued="true"/>
   <field name="dataset" type="extra_facet" stored="true" indexed="true" multiValued="false"/>
   <field name="driving_model" type="extra_facet" stored="true" indexed="true" multiValued="true" />
   <field name="format" type="extra_facet" stored="true" indexed="true" multiValued="false" default="nc"/>

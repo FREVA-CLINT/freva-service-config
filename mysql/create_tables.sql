@@ -265,6 +265,41 @@ CREATE TABLE `hindcast_frontend_hindcastevaluation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+--
+-- Table structure for table `history_batch_settings`
+--
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `history_batch_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `history_id_id` int(11) NOT NULL,
+  `job_id` int(11) NOT NULL,
+  `job_script` longtext NOT NULL,
+  `workload_manager` varchar(20) DEFAULT NULL,
+  `output_file` longtext DEFAULT NULL,
+  `host` longtext DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   KEY `history_batch_settings_05e95c0f` (`history_id_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `history_output`
+--
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `history_output` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `history_id_id` int(11) NOT NULL,
+  `result` json DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   KEY `history_output_05e95c0f` (`history_id_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 --
 -- Table structure for table `history_configuration`
 --
@@ -376,6 +411,21 @@ CREATE TABLE `plugins_parameter` (
   `impact` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1844 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `plugins_custom`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8  */;
+CREATE TABLE `plugins_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `plugins` json DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

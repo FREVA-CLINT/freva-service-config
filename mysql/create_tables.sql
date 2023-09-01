@@ -21,7 +21,7 @@
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_group` (
+CREATE TABLE IF NOT EXISTS `auth_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
@@ -35,7 +35,7 @@ CREATE TABLE `auth_group` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_group_permissions` (
+CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `auth_group_permissions` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_permission` (
+CREATE TABLE IF NOT EXISTS `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `content_type_id` int(11) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `auth_permission` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_user` (
+CREATE TABLE IF NOT EXISTS `auth_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(128) NOT NULL,
   `last_login` datetime DEFAULT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `auth_user` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_user_groups` (
+CREATE TABLE IF NOT EXISTS `auth_user_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE `auth_user_groups` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auth_user_user_permissions` (
+CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE `auth_user_user_permissions` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_admin_log` (
+CREATE TABLE IF NOT EXISTS `django_admin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_time` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE `django_admin_log` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_flatpage` (
+CREATE TABLE IF NOT EXISTS `django_flatpage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(100) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE `django_flatpage` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_flatpage_sites` (
+CREATE TABLE IF NOT EXISTS `django_flatpage_sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `flatpage_id` int(11) NOT NULL,
   `site_id` int(11) NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `django_flatpage_sites` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_migrations` (
+CREATE TABLE IF NOT EXISTS `django_migrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE `django_migrations` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_session` (
+CREATE TABLE IF NOT EXISTS `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime NOT NULL,
@@ -213,7 +213,7 @@ CREATE TABLE `django_session` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_site` (
+CREATE TABLE IF NOT EXISTS `django_site` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain` varchar(100) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE `django_site` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `externaluser_externaluser` (
+CREATE TABLE IF NOT EXISTS `externaluser_externaluser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(100) NOT NULL,
   `status_changed` datetime NOT NULL,
@@ -249,7 +249,7 @@ CREATE TABLE `externaluser_externaluser` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hindcast_frontend_hindcastevaluation` (
+CREATE TABLE IF NOT EXISTS `hindcast_frontend_hindcastevaluation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `score` varchar(50) NOT NULL,
   `eva_time_start` int(11) NOT NULL,
@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `history_output` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `history_configuration` (
+CREATE TABLE IF NOT EXISTS `history_configuration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `history_id_id` int(11) NOT NULL,
   `parameter_id_id` int(11) NOT NULL,
@@ -325,7 +325,7 @@ CREATE TABLE `history_configuration` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `history_history` (
+CREATE TABLE IF NOT EXISTS `history_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` datetime NOT NULL,
   `tool` varchar(50) NOT NULL,
@@ -350,7 +350,7 @@ CREATE TABLE `history_history` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `history_historytag` (
+CREATE TABLE IF NOT EXISTS `history_historytag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `history_id_id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
@@ -368,7 +368,7 @@ CREATE TABLE `history_historytag` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `history_result` (
+CREATE TABLE IF NOT EXISTS `history_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `history_id_id` int(11) NOT NULL,
   `output_file` longtext NOT NULL,
@@ -385,7 +385,7 @@ CREATE TABLE `history_result` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `history_resulttag` (
+CREATE TABLE IF NOT EXISTS `history_resulttag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `result_id_id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
@@ -400,7 +400,7 @@ CREATE TABLE `history_resulttag` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugins_parameter` (
+CREATE TABLE IF NOT EXISTS `plugins_parameter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parameter_name` varchar(50) NOT NULL,
   `parameter_type` varchar(50) NOT NULL,
@@ -419,7 +419,7 @@ CREATE TABLE `plugins_parameter` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8  */;
-CREATE TABLE `plugins_user` (
+CREATE TABLE IF NOT EXISTS `plugins_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modified` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -434,7 +434,7 @@ CREATE TABLE `plugins_user` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugins_toolpullrequest` (
+CREATE TABLE IF NOT EXISTS `plugins_toolpullrequest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime NOT NULL,
   `tool` varchar(50) NOT NULL,
@@ -451,7 +451,7 @@ CREATE TABLE `plugins_toolpullrequest` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugins_version` (
+CREATE TABLE IF NOT EXISTS `plugins_version` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` datetime NOT NULL,
   `tool` varchar(50) NOT NULL,
@@ -469,7 +469,7 @@ CREATE TABLE `plugins_version` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `solr_usercrawl` (
+CREATE TABLE IF NOT EXISTS `solr_usercrawl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime NOT NULL,
   `status` varchar(10) NOT NULL,

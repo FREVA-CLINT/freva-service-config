@@ -429,6 +429,35 @@ CREATE TABLE IF NOT EXISTS `plugins_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `future_recipe`
+--
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `future_recipe` (
+  `code_hash` VARCHAR(64) UNIQUE NOT NULL,
+  `history_id` int(11) DEFAULT -1,
+  `file_name` longtext NOT NULL,
+  `code` json NOT NULL,
+   PRIMARY KEY (`code_hash`),
+   FOREIGN KEY (`code_hash`) REFERENCES `future_files` (`code_hash`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `future_files`
+--
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `future_files` (
+  `code_hash` VARCHAR(64) UNIQUE NOT NULL,
+  `file_names` json NOT NULL,
+   PRIMARY KEY (`code_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
 -- Table structure for table `plugins_toolpullrequest`
 --
 

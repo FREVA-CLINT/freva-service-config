@@ -38,3 +38,4 @@ pt, point, instant, inst, instantaneous => inst
 agg, aggregated, accumulated, sum  => acc
 max, maximum => max
 min, minimum => min
+usr, user_name, username => user

@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_id` (`group_id`,`permission_id`),
-  KEY `auth_group_permissions_5f412f9a` (`group_id`),
   KEY `auth_group_permissions_83d7f98b` (`permission_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -58,8 +57,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
-  KEY `auth_permission_37ef4eb4` (`content_type_id`)
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`)
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -98,7 +96,6 @@ CREATE TABLE IF NOT EXISTS `auth_user_groups` (
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`group_id`),
-  KEY `auth_user_groups_6340c63c` (`user_id`),
   KEY `auth_user_groups_5f412f9a` (`group_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1209 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,7 +112,6 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`permission_id`),
-  KEY `auth_user_user_permissions_6340c63c` (`user_id`),
   KEY `auth_user_user_permissions_83d7f98b` (`permission_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=317 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -172,7 +168,6 @@ CREATE TABLE IF NOT EXISTS `django_flatpage_sites` (
   `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `flatpage_id` (`flatpage_id`,`site_id`),
-  KEY `django_flatpage_sites_872c4601` (`flatpage_id`),
   KEY `django_flatpage_sites_99732b5c` (`site_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -252,8 +247,7 @@ CREATE TABLE IF NOT EXISTS `externaluser_externaluser` (
 CREATE TABLE IF NOT EXISTS `future_files` (
   `code_hash` varchar(64) NOT NULL,
   `file_names` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`file_names`)),
-  PRIMARY KEY (`code_hash`),
-  UNIQUE KEY `code_hash` (`code_hash`)
+  PRIMARY KEY (`code_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,7 +263,6 @@ CREATE TABLE IF NOT EXISTS `future_recipe` (
   `file_name` longtext NOT NULL,
   `code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`code`)),
   PRIMARY KEY (`code_hash`),
-  UNIQUE KEY `code_hash` (`code_hash`),
   CONSTRAINT `future_recipe_ibfk_1` FOREIGN KEY (`code_hash`) REFERENCES `future_files` (`code_hash`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

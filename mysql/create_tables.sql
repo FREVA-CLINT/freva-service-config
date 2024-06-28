@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.8.3-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19-11.4.2-MariaDB, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: regiklimdb
+-- Host: localhost    Database: freva
 -- ------------------------------------------------------
--- Server version	10.8.3-MariaDB-1:10.8.3+maria~jammy
+-- Server version	10.11.8-MariaDB-ubu2204
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -13,7 +13,7 @@
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
 
 --
 -- Table structure for table `auth_group`
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `auth_group` (
   `name` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=109 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,9 +41,8 @@ CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_id` (`group_id`,`permission_id`),
-  KEY `auth_group_permissions_5f412f9a` (`group_id`),
   KEY `auth_group_permissions_83d7f98b` (`permission_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,9 +57,8 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
-  KEY `auth_permission_37ef4eb4` (`content_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,9 +96,8 @@ CREATE TABLE IF NOT EXISTS `auth_user_groups` (
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`group_id`),
-  KEY `auth_user_groups_6340c63c` (`user_id`),
   KEY `auth_user_groups_5f412f9a` (`group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1209 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1209 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,9 +112,8 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`permission_id`),
-  KEY `auth_user_user_permissions_6340c63c` (`user_id`),
   KEY `auth_user_user_permissions_83d7f98b` (`permission_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=317 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=317 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   PRIMARY KEY (`id`),
   KEY `django_admin_log_6340c63c` (`user_id`),
   KEY `django_admin_log_37ef4eb4` (`content_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=530 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=530 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `django_flatpage` (
   `registration_required` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `django_flatpage_c379dc61` (`url`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,9 +168,8 @@ CREATE TABLE IF NOT EXISTS `django_flatpage_sites` (
   `site_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `flatpage_id` (`flatpage_id`,`site_id`),
-  KEY `django_flatpage_sites_872c4601` (`flatpage_id`),
   KEY `django_flatpage_sites_99732b5c` (`site_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
   `expire_date` datetime NOT NULL,
   PRIMARY KEY (`session_key`),
   KEY `django_session_b7b81f0c` (`expire_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `django_site` (
   `domain` varchar(100) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +235,36 @@ CREATE TABLE IF NOT EXISTS `externaluser_externaluser` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `externaluser_externaluser_email_63d2ae2521a190ae_uniq` (`email`),
   UNIQUE KEY `externaluser_externaluser_username_725969e832f7eabf_uniq` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `future_files`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `future_files` (
+  `code_hash` varchar(64) NOT NULL,
+  `file_names` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`file_names`)),
+  PRIMARY KEY (`code_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `future_recipe`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `future_recipe` (
+  `code_hash` varchar(64) NOT NULL,
+  `history_id` int(11) DEFAULT -1,
+  `file_name` longtext NOT NULL,
+  `code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`code`)),
+  PRIMARY KEY (`code_hash`),
+  CONSTRAINT `future_recipe_ibfk_1` FOREIGN KEY (`code_hash`) REFERENCES `future_files` (`code_hash`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,13 +286,13 @@ CREATE TABLE IF NOT EXISTS `hindcast_frontend_hindcastevaluation` (
   `path_fieldmean` varchar(255) DEFAULT NULL,
   `path_map` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `history_batch_settings`
 --
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `history_batch_settings` (
@@ -279,26 +303,10 @@ CREATE TABLE IF NOT EXISTS `history_batch_settings` (
   `workload_manager` varchar(20) DEFAULT NULL,
   `output_file` longtext DEFAULT NULL,
   `host` longtext DEFAULT NULL,
-   PRIMARY KEY (`id`),
-   KEY `history_batch_settings_05e95c0f` (`history_id_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `history_batch_settings_05e95c0f` (`history_id_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `history_output`
---
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE IF NOT EXISTS `history_output` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_id_id` int(11) NOT NULL,
-  `result` json DEFAULT NULL,
-   PRIMARY KEY (`id`),
-   KEY `history_output_05e95c0f` (`history_id_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `history_configuration`
@@ -316,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `history_configuration` (
   PRIMARY KEY (`id`),
   KEY `history_configuration_05e95c0f` (`history_id_id`),
   KEY `history_configuration_c3d9a846` (`parameter_id_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=37258 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37258 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +349,7 @@ CREATE TABLE IF NOT EXISTS `history_history` (
   PRIMARY KEY (`id`),
   KEY `history_history_82ae9392` (`uid`),
   KEY `version_details_id` (`version_details_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2111 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2111 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +367,22 @@ CREATE TABLE IF NOT EXISTS `history_historytag` (
   PRIMARY KEY (`id`),
   KEY `history_historytag_05e95c0f` (`history_id_id`),
   KEY `history_historytag_82ae9392` (`uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2130 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2130 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `history_output`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `history_output` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `history_id_id` int(11) NOT NULL,
+  `result` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`result`)),
+  PRIMARY KEY (`id`),
+  KEY `history_output_05e95c0f` (`history_id_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `history_result` (
   `preview_file` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `history_result_05e95c0f` (`history_id_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4189 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4189 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `history_resulttag` (
   `type` int(11) NOT NULL,
   `text` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,52 +433,8 @@ CREATE TABLE IF NOT EXISTS `plugins_parameter` (
   `default` varchar(255) DEFAULT NULL,
   `impact` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1844 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1844 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `plugins_custom`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8  */;
-CREATE TABLE IF NOT EXISTS `plugins_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `modified` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `plugins` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `future_recipe`
---
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE IF NOT EXISTS `future_recipe` (
-  `code_hash` VARCHAR(64) UNIQUE NOT NULL,
-  `history_id` int(11) DEFAULT -1,
-  `file_name` longtext NOT NULL,
-  `code` json NOT NULL,
-   PRIMARY KEY (`code_hash`),
-   FOREIGN KEY (`code_hash`) REFERENCES `future_files` (`code_hash`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `future_files`
---
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE IF NOT EXISTS `future_files` (
-  `code_hash` VARCHAR(64) UNIQUE NOT NULL,
-  `file_names` json NOT NULL,
-   PRIMARY KEY (`code_hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
 
 --
 -- Table structure for table `plugins_toolpullrequest`
@@ -471,7 +450,22 @@ CREATE TABLE IF NOT EXISTS `plugins_toolpullrequest` (
   `status` varchar(10) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `plugins_user`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `plugins_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `plugins` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`plugins`)),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -489,7 +483,7 @@ CREATE TABLE IF NOT EXISTS `plugins_version` (
   `internal_version_api` varchar(40) NOT NULL,
   `repository` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +502,7 @@ CREATE TABLE IF NOT EXISTS `solr_usercrawl` (
   `ingest_msg` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id_refs_id_dc9f4a71` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -518,6 +512,6 @@ CREATE TABLE IF NOT EXISTS `solr_usercrawl` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2022-06-17 16:01:59
+-- Dump completed on 2024-06-21 12:12:38

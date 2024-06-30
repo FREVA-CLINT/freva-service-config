@@ -9,7 +9,7 @@ those services are:
 - Redis
 
 Any changes to the configurations like MariaDB table definitions, Apache
-Solr managed_schema.xml file or Redis startup script should be done here.
+Solr `managed_schema.xml` file or Redis startup script should be done here.
 
 ## Using the config files when creating images
 
@@ -70,10 +70,10 @@ The following environment variables are considered by the startup script:
 > **Note:** The above environment variables are optional, if for example you do
             not set the `REDIS_USERNAME` and `REDIS_PASSWORD` the server will
             be started using the default redis db user without password
-            protection. The same applies for TLS certificates. If you choose
+            protection. The same applies to TLS certificates. If you choose
             none, none will be used. Once you've chosen usernames, passwords
-            and certificates make sure this information client(s) is passed
-            on to all clients making connections to the server.
+            and/or certificates make sure this information is passed
+            on to the client(s) making connections to the server.
 
 ### Backup of data
 If you need a simple backup functionality, you can add the `daily_backup.sh`

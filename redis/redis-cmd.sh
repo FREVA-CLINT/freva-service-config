@@ -6,7 +6,7 @@ echo "user default off -@all" > /tmp/redis.conf
 REDIS_PASSWORD="${REDIS_PASSWORD:+>$REDIS_PASSWORD}"
 
 ## Add only a selection of user rights, if no user was passed via env use the default user same for password
-echo "user ${REDIS_USERNAME:-default} on +@all -@admin -@dangerous +flushdb ~* &* ${REDIS_PASSWORD:-nopass}" >> /tmp/redis.conf
+echo "user ${REDIS_USERNAME:-default} on +@all ~* &* ${REDIS_PASSWORD:-nopass}" >> /tmp/redis.conf
 
 # Enable sys logging, default notice level
 echo "loglevel ${REDIS_LOGLEVEL:-notice}" >> /tmp/redis.conf

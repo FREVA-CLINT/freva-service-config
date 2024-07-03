@@ -12,4 +12,3 @@ for file in $(ls ${BACKUP_DIR}/backup-*.sql.gz);do
     fi
 done
 mariadb-dump -u root -h localhost -p"${MYSQL_ROOT_PASSWORD}" --all-databases | gzip -c -9 -q > $backup_f
-chown mysql:mysql ${backup_f}

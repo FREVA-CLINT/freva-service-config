@@ -6,7 +6,6 @@ import os
 from pathlib import Path
 import time
 import urllib.request
-import tempfile
 from typing import Optional
 
 try:
@@ -210,7 +209,7 @@ def cli() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     kill_parser.add_argument(
-        "pid-file", type=str, help="Path to the PID file holding the PID."
+        "pid_file", type=Path, help="Path to the PID file holding the PID."
     )
     kill_parser.set_defaults(apply=kill_proc)
     args = app.parse_args()

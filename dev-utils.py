@@ -2,9 +2,11 @@
 
 import argparse
 import datetime
+import json
 import os
 import time
 import urllib.request
+from base64 import b64encode
 from pathlib import Path
 from typing import Optional
 
@@ -54,6 +56,29 @@ def wait_for_oidc(namespace: argparse.Namespace) -> None:
         time.sleep(namespace.time_increment)
         time_passed += namespace.time_increment
     raise SystemExit("Open ID connect service is not up.")
+
+
+def create_redis_config_json(args: argparse.Namespace) -> None:
+    """Create a redis config file."""
+
+    if args.cert_file and Path(args.cert_file.strip()).is_file():
+        ssl_cert = Path(args.cert_file).read_text()
+    else:
+        ssl_cert = None
+    if args.key_file and Path(args.key_file.strip()).is_file():
+        ssl_key = Path(args.key_file).read_text()
+    else:
+        ssl_key = None
+    content = json.dumps(
+        {
+            "user": args.user.strip() or None,
+            "passwd": args.passwd.strip() or None,
+            "ssl_cert": ssl_cert,
+            "ssl_key": ssl_key,
+            "host": "redis://localhost:6379",
+        }
+    ).encode("utf-8")
+    args.output_file.write_bytes(b64encode(content))
 
 
 class RandomKeys:
@@ -203,6 +228,39 @@ def cli() -> None:
         ),
     )
     oidc_parser.set_defaults(apply=wait_for_oidc)
+    redis_parser = subparser.add_parser(
+        name="redis-config",
+        help="Create a bas64 encoded redis config file.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    redis_parser.add_argument(
+        "output_file", type=Path, help="Path to the encoded info file."
+    )
+    redis_parser.add_argument(
+        "--user",
+        nargs="?",
+        default=os.getenv("REDIS_USER", ""),
+        help="User name for redis connection.",
+    )
+    redis_parser.add_argument(
+        "--passwd",
+        nargs="?",
+        default=os.getenv("REDIS_PASSWD", ""),
+        help="Password for redis connection.",
+    )
+    redis_parser.add_argument(
+        "--cert-file",
+        nargs="?",
+        default=os.getenv("REDIS_SSL_CERTFILE", ""),
+        help="Public cert file to the redis connection.",
+    )
+    redis_parser.add_argument(
+        "--key-file",
+        nargs="?",
+        default=os.getenv("REDIS_SSL_KEYFILE", ""),
+        help="Private key file to the redis connection.",
+    )
+    redis_parser.set_defaults(apply=create_redis_config_json)
     kill_parser = subparser.add_parser(
         name="kill",
         help="Kill a running process.",

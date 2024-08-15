@@ -19,6 +19,7 @@ if [ -f "$REDIS_SSL_CERTFILE" ] && [ -f "$REDIS_SSL_KEYFILE" ];then
     echo "tls-cert-file $REDIS_SSL_CERTFILE" >> /tmp/redis.conf
     echo "tls-key-file $REDIS_SSL_KEYFILE" >> /tmp/redis.conf
     echo "tls-ca-cert-file $REDIS_SSL_CERTFILE" >> /tmp/redis.conf
+    echo "tls-protocols TLSv1.3" >> /tmp/redis.conf
 fi
 cat /tmp/redis.conf
 redis-server /tmp/redis.conf

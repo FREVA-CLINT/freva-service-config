@@ -1,0 +1,174 @@
+{
+  "index_patterns": ["latest*", "files*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "analysis": {
+        "char_filter": {
+          "version_char_filter": {
+            "type": "pattern_replace",
+            "pattern": "^v",
+            "replacement": ""
+          }
+        },
+        "filter": {
+          "synonym_filter": {
+            "type": "synonym_graph",
+            "synonyms_path": "synonyms.txt",
+            "ignore_case": true,
+            "expand": true
+          }
+        },
+        "analyzer": {
+          "version_analyzer": {
+            "tokenizer": "keyword",
+            "char_filter": ["version_char_filter"],
+            "filter": []
+          },
+          "text_general_analyzer": {
+            "tokenizer": "keyword",
+            "filter": ["lowercase", "synonym_filter"]
+          },
+          "extra_facet_analyzer": {
+            "tokenizer": "keyword",
+            "filter": ["lowercase", "synonym_filter"]
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "_version_": {
+          "type": "long"
+        },
+        "file": {
+          "type": "keyword"
+        },
+        "uri": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "float"
+        },
+        "creation_time": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis",
+          "null_value": "now"
+        },
+        "version": {
+          "type": "text",
+          "analyzer": "version_analyzer",
+          "fielddata": true
+        },
+        "file_name": {
+          "type": "keyword"
+        },
+        "file_no_version": {
+          "type": "keyword"
+        },
+        "cmor_table": {
+          "type": "text",
+          "analyzer": "text_general_analyzer",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
+        },
+        "experiment": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "ensemble": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "fs_type": {
+          "type": "text",
+          "analyzer": "text_general_analyzer",
+          "null_value": "posix"
+        },
+        "grid_label": {
+          "type": "text",
+          "analyzer": "text_general_analyzer",
+          "null_value": "gn"
+        },
+        "institute": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "model": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "project": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "product": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "realm": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "variable": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "time": {
+          "type": "date_range"
+        },
+        "time_aggregation": {
+          "type": "text",
+          "analyzer": "text_general_analyzer",
+          "null_value": "mean"
+        },
+        "time_frequency": {
+          "type": "text",
+          "analyzer": "text_general_analyzer"
+        },
+        "dataset": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "driving_model": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "format": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer",
+          "null_value": "nc"
+        },
+        "grid_id": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "level_type": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer",
+          "null_value": "2d"
+        },
+        "rcm_name": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "rcm_version": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "user": {
+          "type": "text",
+          "analyzer": "extra_facet_analyzer"
+        },
+        "future": {
+          "type": "keyword"
+        },
+        "future_id": {
+          "type": "keyword",
+          "null_value": "-1"
+        }
+      }
+    }
+  }
+}

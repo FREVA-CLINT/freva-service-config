@@ -8,9 +8,11 @@ those services are:
 - Apache Solr
 - Redis
 - Keycloak Open ID Connect service via OpenLDAP federation
+- ElasticSearch
 
 Any changes to the configurations like MariaDB table definitions, Apache
-Solr `managed_schema.xml` file or Redis startup script should be done here.
+Solr `managed_schema.xml` file, ElasticSearch `index_tempalte.json` file
+or Redis startup script should be done here.
 
 ## Utility script for preparing services.
 The ``dev-utils.py`` script provides useful commands to prepare the start of
@@ -43,8 +45,9 @@ options:
 
 ## Using the config files when creating images
 
-Usage of the configurations within the Solr, MariaDB and Redis containers should
-be realised by adding the files via *volumes* to the container during creation.
+Usage of the configurations within the Solr, Elasticsearch, MariaDB and Redis 
+containers should be realised by adding the files via *volumes* to the container 
+during creation.
 
 
 ### MariaDB
@@ -79,6 +82,15 @@ For the **Apache Solr** container consider the following environment variables:
 - `SOLR_HEAP`: memory allocated for the solr process.
 - `NUM_BACKUPS`: number of backups to keep. See backup for more details.
 
+### ElasticSearch
+
+For Elasticsearch three following files are needed:
+
+```console
+docker run -v  path/to/freva-service-config/elasticsearch/init_elasticsearch.sh:/usr/share/elasticsearch/init_elasticsearch.sh:ro \
+      path/to/freva-service-config//elasticsearch/managed_schema.json:/usr/share/elasticsearch/config/managed_schema.json:ro \
+      path/to/freva-service-config/elasticsearch/synonyms.txt:/usr/share/elasticsearch/config/synonyms.txt:ro
+```
 
 ### Redis
 A secure Redis instance using ACL's and TLS connections can be set up using

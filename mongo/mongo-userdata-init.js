@@ -27,7 +27,11 @@ db.createCollection("user_data", {
             bsonType: "string",
             description: "Must be a string and is required."
           },
-    
+          // Path Field for Re-crawling
+          "path": {
+            bsonType: "string",
+            description: "Path inputed by user re-crawling purpose."
+          },
           // Versioning Fields
           "_version_": {
             bsonType: "long",
@@ -75,7 +79,8 @@ db.createCollection("user_data", {
           "variable": multiValuedStringField("Array of variables or a single string."),
           "time": {
             bsonType: "string",
-            description: "Time range as a string in format '[start TO end]'."
+            pattern: "^\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z TO \\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z\\]$",
+            description: "Time range in ISO 8601 format"
           },
           "time_aggregation": multiValuedStringField("Array of time aggregations or a single string."),
           "time_frequency": multiValuedStringField("Array of time frequencies or a single string."),

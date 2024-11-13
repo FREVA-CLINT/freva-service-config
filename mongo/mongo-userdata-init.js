@@ -61,7 +61,15 @@ db.createCollection("user_data", {
             bsonType: "string",
             description: "File name without version."
           },
-    
+          "bbox": {
+            bsonType: "array",
+            minItems: 4,
+            maxItems: 4,
+            items: {
+              bsonType: "double"
+            },
+            description: "Bounding box coordinates [west, south, east, north] in degrees"
+          },
           // Standard Facet Fields (Multivalued)
           "cmor_table": multiValuedStringField("Array of CMOR tables or a single string."),
           "experiment": multiValuedStringField("Array of experiments or a single string."),

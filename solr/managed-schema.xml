@@ -13,14 +13,14 @@
   <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
   <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>
   <fieldType name="version" class="solr.TextField" >
-  <fieldType name="bbox" class="solr.SpatialRecursivePrefixTreeFieldType" normWrapLongitude="true"
-             geo="true" distErrPct="0.025" maxDistErr="0.001" distanceUnits="degrees" />
+
   <analyzer>
         <charFilter class="solr.PatternReplaceCharFilterFactory" pattern="^v"/>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
     </analyzer>
   </fieldType>
-
+  <fieldType name="bbox" class="solr.SpatialRecursivePrefixTreeFieldType" normWrapLongitude="true"
+             geo="true" distErrPct="0.025" maxDistErr="0.001" distanceUnits="degrees" />
   <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100" multiValued="true">
     <analyzer type="index">
       <tokenizer class="solr.KeywordTokenizerFactory"/>

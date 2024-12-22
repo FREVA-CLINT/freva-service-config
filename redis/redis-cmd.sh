@@ -2,7 +2,10 @@
 #
 # Set the ACL of the redis instance
 # Strip any rights from the redis default user.
-echo "user default off -@all" > /tmp/redis.conf
+if [ "${REDIS_USERNAME}" ];then
+    # Disable the default user
+    echo "user default off -@all" > /tmp/redis.conf
+fi
 REDIS_PASSWORD="${REDIS_PASSWORD:+>$REDIS_PASSWORD}"
 
 ## Add only a selection of user rights, if no user was passed via env use the default user same for password

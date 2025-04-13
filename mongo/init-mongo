@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+CONDA_PREFIX=$(readlink -f ${CONDA_PREFIX:-$(dirname $0)../../../)})
+DATA_DIR=${API_DATA_DIR:-/data/db}
+LOG_DIR=${API_LOG_DIR:-/data/logs}
+CONFIG_DIR=${API_CONFIG_DIR:-/data/config}
+set  -o nounset -o pipefail -o errexit
+mkdir -p $LOG_DIR $DATA_DIR $CONFIG_DIR
+API_MONGO_HOST=${API_MONGO_HOST:-localhost:27017}
+API_MONGO_DB=${API_MONGO_DB:-search_stats}
+trap 'mongod -f $CONFIG_DIR/mongod.yaml --shutdown' SIGINT SIGTERM ERR
+temp_dir=$(mktemp -d)
+cat <<EOI > $CONFIG_DIR/mongod.yaml
+# MongoDB Configuration File
+
+# Where to store data.
+storage:
+  dbPath: $DATA_DIR
+  journal:
+    enabled: true
+# Network interfaces.
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+
+# Security settings.
+security:
+  authorization: enabled  # Enables role-based access control.
+
+# Process management.
+processManagement:
+  fork: true  # Run the MongoDB server as a daemon.
+  pidFilePath: $CONFIG_DIR/mongod.pid  # Location of the process ID file.
+
+# Logging.
+systemLog:
+  destination: file
+  logAppend: true
+  path: $LOG_DIR/mongod.log
+EOI
+
+cat    << EOI > $temp_dir/init_mongo.py
+import os
+from pymongo import MongoClient
+from pymongo.errors import OperationFailure
+
+client = MongoClient("$API_MONGO_HOST")
+client["$API_MONGO_DB"]
+db = client["admin"]
+try:
+    db.command("dropUser", "$API_MONGO_USER")
+except OperationFailure as e:
+    pass
+try:
+    db.command(
+        "createUser", "$API_MONGO_USER",
+        pwd="$API_MONGO_PASSWORD",
+        roles=["userAdminAnyDatabase","readWriteAnyDatabase" ],
+    )
+except Exception as e:
+    print('Failed to create user {}: {}'.format("$API_MONGO_USER", e))
+    raise
+EOI
+mongod -f $CONFIG_DIR/mongod.yaml --noauth --fork
+sleep 5
+python $temp_dir/init_mongo.py
+mongod -f $CONFIG_DIR/mongod.yaml --shutdown &
+rm -fr $temp_dir
+if [ "${START_MONGO:-}" ];then
+    mongod -f $CONFIG_DIR/mongod.yaml --auth  --cpu
+fi

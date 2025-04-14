@@ -34,8 +34,9 @@ jobs:
       - name: Extract version from image
         id: version
         run: |
-          bash version-inspect.sh ${{ matrix.service }}
-          echo $(cat /tmp/image-version-${{ matrix.service}} | tr -d '\r\n') >> $GITHUB_OUTPUT
+          VERSION=$(bash version-inspect.sh ${{ matrix.service }} | tr -d '\r\n')
+          echo "Detected version: $VERSION"
+          echo "$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set push flag
         id: push

@@ -20,7 +20,7 @@ fi
 image=$(head -n1 $1/Dockerfile | awk '{print $NF}')
 image_version=$(echo $image | cut -d : -f2)
 
-$path pull $image
+$path pull $image 1>&2
 
 if [ "$image_version" != "latest" ];then
     version=$image_version
@@ -34,5 +34,4 @@ if [ -z "$version" ];then
     echo "Error: could not find version for $1 >&2"
     exit 1
 fi
-echo version=$version > /tmp/image-version-$1.txt
-echo "Found version for $1: $version"
+echo version=$(echo $version| tr -d '\r\n')

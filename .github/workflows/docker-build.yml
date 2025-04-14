@@ -36,6 +36,7 @@ jobs:
         run: |
           VERSION=$(bash version-inspect.sh ${{ matrix.service }} | tr -d '\r\n')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo Detected Version: $VERSION
 
       - name: Set push flag
         id: push

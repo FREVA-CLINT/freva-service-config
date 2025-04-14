@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#set -e pipefail
 order=(podman docker)
 path=""
 if [ -z "$1" ];then
@@ -17,7 +18,7 @@ if [ -z "$path" ];then
 fi
 
 
-$path pull ${1}:latest
+$path pull docker.io/${1}:latest &> /dev/null
 
 if [ "$1" = "redis" ];then
     version=$($path run -it redis sh -c 'echo $REDIS_VERSION')

@@ -1,4 +1,6 @@
 FROM docker.io/mysql:9.0.1
+ARG VERSION
+LABEL org.opencontainers.image.version="$VERSION"
 
 ENV NUM_BACKUPS=7
 ENV BACKUP_DIR=/var/lib/mysql/backup

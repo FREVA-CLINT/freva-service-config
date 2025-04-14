@@ -1,4 +1,6 @@
 FROM docker.io/mongo:latest
+ARG VERSION
+LABEL org.opencontainers.image.version="$VERSION"
 
 COPY --chmod=0755 init-mongo /usr/local/bin/start-mongo
 

@@ -1,4 +1,6 @@
 FROM docker.io/redis:latest
+ARG VERSION
+LABEL org.opencontainers.image.version="$VERSION"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends jq && \

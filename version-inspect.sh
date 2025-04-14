@@ -34,4 +34,4 @@ if [ -z "$version" ];then
     echo "Error: could not find version for $1 >&2"
     exit 1
 fi
-echo version=$(echo $version| tr -d '\r\n')
+echo $version| tr -d '\r\n'

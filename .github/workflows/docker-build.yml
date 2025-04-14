@@ -34,7 +34,7 @@ jobs:
       - name: Extract version from image
         id: version
         run: |
-          VERSION=$(bash version-inspect.sh ghcr.io/freva-clint/freva-${{ matrix.service }} | tr -d '\r\n')
+          VERSION=$(bash version-inspect.sh ${{ matrix.service }} | tr -d '\r\n')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set push flag

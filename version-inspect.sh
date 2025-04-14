@@ -17,6 +17,8 @@ if [ -z "$path" ];then
 fi
 
 
+$path pull ${1}:latest
+
 if [ "$1" = "redis" ];then
     version=$($path run -it redis sh -c 'echo $REDIS_VERSION')
 else

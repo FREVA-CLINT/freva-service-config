@@ -53,8 +53,7 @@ jobs:
           file: ${{ matrix.service }}/Dockerfile
           platforms: linux/amd64, linux/arm64
           build-args: VERSION=${{ steps.version.outputs.version }}
-          #push: ${{ steps.push.outputs.push }}
-          push: true
+          push: ${{ steps.push.outputs.push }}
           no-cache: true
           tags: |
             ghcr.io/freva-clint/freva-${{ matrix.service }}:latest

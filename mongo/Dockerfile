@@ -1,4 +1,4 @@
-FROM mongo:latest
+FROM docker.io/mongo:latest
 
 COPY --chmod=0755 init-mongo /usr/local/bin/start-mongo
 

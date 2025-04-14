@@ -1,4 +1,4 @@
-FROM solr:latest
+FROM docker.io/solr:latest
 
 ENV CORE=files
 ENV NUM_BACKUPS=7

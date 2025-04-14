@@ -1,4 +1,4 @@
-FROM mysql:9.0.1
+FROM docker.io/mysql:9.0.1
 
 ENV NUM_BACKUPS=7
 ENV BACKUP_DIR=/var/lib/mysql/backup

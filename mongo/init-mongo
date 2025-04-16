@@ -28,13 +28,13 @@ security:
 
 # Process management.
 processManagement:
-  fork: true  # Run the MongoDB server as a daemon.
+  fork: false  # Run the MongoDB server as a daemon.
   pidFilePath: $CONFIG_DIR/mongod.pid  # Location of the process ID file.
 
 # Logging.
 systemLog:
   destination: file
-  logAppend: true
+  logAppend: false
   path: $LOG_DIR/mongod.log
 EOI
 

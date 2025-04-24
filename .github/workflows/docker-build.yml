@@ -40,8 +40,8 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v4
         with:
-          context: ${{ matrix.service }}
-          file: ${{ matrix.service }}/Dockerfile
+          context: .
+          file: Dockerfile
           platforms: linux/amd64
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
@@ -68,8 +68,8 @@ jobs:
         # if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/build-push-action@v4
         with:
-          context: ${{ matrix.service }}
-          file: ${{ matrix.service }}/Dockerfile
+          context: .
+          file: Dockerfile
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           build-args: |
             VERSION=${{ steps.version.outputs.version }}

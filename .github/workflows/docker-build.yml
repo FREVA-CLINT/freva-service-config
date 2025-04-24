@@ -52,8 +52,9 @@ jobs:
           context: ${{ matrix.service }}
           file: ${{ matrix.service }}/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/ppc64le
-          build-args: VERSION=${{ steps.version.outputs.version }}
-          build-args: SYSTEM=${{ matrix.service }}
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            SYSTEM=${{ matrix.service }}
           push: false
           load: true
           no-cache: true
@@ -74,7 +75,7 @@ jobs:
             ghcr.io/freva-clint/freva-${{ matrix.service }} healthchecks
 
       - name: Push image (after successful healthcheck)-
-        if: ${{ github.ref == 'refs/heads/main' }}
+        # if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
           docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}

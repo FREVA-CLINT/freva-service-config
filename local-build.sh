@@ -54,7 +54,7 @@ for service in "${SERVICES[@]}"; do
 
   if $DO_CHECK; then
     echo "🧪 Testing freva-$service ..."
-    $cmd run --rm -it "${ENV_VARS[@]}" \
+    $cmd run --rm "${ENV_VARS[@]}" \
       ghcr.io/freva-clint/freva-$service healthchecks
   fi
 done

@@ -37,7 +37,7 @@ processManagement:
 # Logging.
 systemLog:
   destination: file
-  logAppend: false
+  logAppend: true
   path: $LOG_DIR/mongod.log
 EOI
 
@@ -69,4 +69,5 @@ sleep 5
 python $temp_dir/init_mongo.py
 mongod -f $CONFIG_DIR/mongod.yaml --shutdown &
 rm -fr $temp_dir
+rm -rf $LOG_DIR/*
 mongod -f $CONFIG_DIR/mongod.yaml --auth  --cpu

@@ -26,7 +26,7 @@ for core in $SOLR_CORE latest;do
     fi
     if $configure_solr ;then
         if ! is_solr_running $SOLR_PORT ;then
-            echo "Starting Solr on port \$SOLR_PORT ..."
+            echo "Starting Solr on port $SOLR_PORT ..."
             solr start \
                 --force -m $SOLR_HEAP -s ${DATA_DIR} \
                 -p $SOLR_PORT -Dsolr.log.dir=$temp_dir -q --no-prompt &> $temp_dir/solr.log &
@@ -38,7 +38,7 @@ for core in $SOLR_CORE latest;do
         echo "Creating core $core ..."
         solr create -c $core --solr-url http://localhost:$SOLR_PORT
         cp $CONFIG_DIR/*.{txt,xml} $DATA_DIR/$core/conf
-        curl http://localhost:\$SOLR_PORT/solr/\$core/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
+        curl http://localhost:$SOLR_PORT/solr/$core/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
     fi
 done
 if $configure_solr ;then

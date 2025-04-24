@@ -1,73 +1,84 @@
 #!/usr/bin/env bash
-set  -o nounset -o pipefail -o errexit
+set -euo pipefail
+
 export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
 export SERVICE=mongo
-source ${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh
-PID_DIR=/tmp/mongo
-mkdir $PID_DIR
-set  -o nounset -o pipefail -o errexit
+source "${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh"
+
+PID_DIR="/tmp/mongo"
+mkdir -p "$PID_DIR"
+PID_FILE="/tmp/mongod.pid"
 
 API_MONGO_HOST=${API_MONGO_HOST:-localhost:27017}
 API_MONGO_DB=${API_MONGO_DB:-search_stats}
 temp_dir=$(mktemp -d)
-trap "rm -rf $temp_dir && mongod -f $CONFIG_DIR/mongod.yaml --shutdown" EXIT SIGINT SIGTERM ERR
 
-cat <<EOI > $CONFIG_DIR/mongod.yaml
-# MongoDB Configuration File
+function cleanup {
+    echo "Shutting down MongoDB..."
+    if [[ -f "$PID_FILE" ]]; then
+        kill "$(cat "$PID_FILE")" || true
+        rm -f "$PID_FILE"
+    fi
+    rm -rf "$temp_dir"
+}
+trap cleanup EXIT SIGINT SIGTERM ERR
 
-# Where to store data.
+# Generate config
+cat <<EOI > "$CONFIG_DIR/mongod.yaml"
 storage:
   dbPath: $DATA_DIR
   journal:
     enabled: true
-# Network interfaces.
+
 net:
   port: 27017
   bindIp: 0.0.0.0
 
-# Security settings.
 security:
-  authorization: enabled  # Enables role-based access control.
+  authorization: enabled
 
-# Process management.
 processManagement:
-  fork: false  # Run the MongoDB server as a daemon.
-  pidFilePath: /tmp/mongod.pid  # Location of the process ID file.
+  fork: false
+  pidFilePath: $PID_FILE
 
-# Logging.
 systemLog:
   destination: file
   logAppend: true
   path: $LOG_DIR/mongod.log
 EOI
 
-cat    << EOI > $temp_dir/init_mongo.py
+# Init user with --noauth mode
+mongod --fork -f "$CONFIG_DIR/mongod.yaml" --noauth
+sleep 5
+
+cat > "$temp_dir/init_mongo.py" <<EOF
 import os
 from pymongo import MongoClient
 from pymongo.errors import OperationFailure
 
 client = MongoClient("$API_MONGO_HOST")
-client["$API_MONGO_DB"]
 db = client["admin"]
 try:
     db.command("dropUser", "$API_MONGO_USER")
-except OperationFailure as e:
+except OperationFailure:
     pass
 try:
     db.command(
         "createUser", "$API_MONGO_USER",
         pwd="$API_MONGO_PASSWORD",
-        roles=["userAdminAnyDatabase","readWriteAnyDatabase" ],
+        roles=["userAdminAnyDatabase", "readWriteAnyDatabase"]
     )
 except Exception as e:
-    print('Failed to create user {}: {}'.format("$API_MONGO_USER", e))
+    print(f"Failed to create user: {e}")
     raise
-EOI
+EOF
 
-mongod -f $CONFIG_DIR/mongod.yaml --noauth --fork
-sleep 5
-python $temp_dir/init_mongo.py
-mongod -f $CONFIG_DIR/mongod.yaml --shutdown &
-rm -fr $temp_dir
-rm -rf $LOG_DIR/*
-mongod -f $CONFIG_DIR/mongod.yaml --auth  --cpu
+python "$temp_dir/init_mongo.py"
+
+# Shutdown noauth server
+kill "$(cat "$PID_FILE")"
+rm -f "$PID_FILE"
+
+# Final run: start MongoDB with auth and block
+rm -rf "$LOG_DIR"/*
+mongod -f "$CONFIG_DIR/mongod.yaml" --auth --cpu

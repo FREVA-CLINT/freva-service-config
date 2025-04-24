@@ -25,9 +25,12 @@ case "$SERVICE" in
         exit 1
         ;;
     mongo)
-        python -c "import pymongo; \
-            pymongo.MongoClient('mongodb://$API_MONGO_USER:$API_MONGO_PASSWORD@localhost:27017?timeoutMS=2000').list_database_names()" \
-            >/dev/null 2>&1
+        echo "import os" > /tmp/test.py
+        echo "import pymongo" >> /tmp/test.py
+        echo "" >> /tmp/test.py
+        echo "pymongo.MongoClient('mongodb://$API_MONGO_USER:$API_MONGO_PASSWORD@localhost:27017?timeoutMS=2000').list_database_names()" >> /tmp/test.py
+        cat /tmp/test.py
+        python /tmp/test.py
         ;;
     redis)
         if [ -f "/tmp/redis-server.pid" ];then

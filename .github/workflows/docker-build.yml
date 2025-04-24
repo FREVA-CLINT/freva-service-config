@@ -39,7 +39,7 @@ jobs:
 
       - name: Checking the image builds
         run:
-          bash local-build.sh --check
+          bash local-build.sh --check --service=${{ matrix.service }}
 
       - name: Build and push multi-arch image
         # if: ${{ github.ref == 'refs/heads/main' }}

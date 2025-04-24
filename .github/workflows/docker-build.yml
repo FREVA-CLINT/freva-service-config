@@ -37,32 +37,9 @@ jobs:
           echo "Detected version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Build image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile
-          platforms: linux/amd64
-          build-args: |
-            VERSION=${{ steps.version.outputs.version }}
-            SYSTEM=${{ matrix.service }}
-          push: false
-          load: true
-          no-cache: true
-          tags: |
-            ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
-
-      - name: Checking the built image
+      - name: Checking the image builds
         run:
-          docker run --rm \
-            -e MYSQL_ROOT_PASSWORD=foo \
-            -e MYSQL_USER=bar \
-            -e MYSQL_PASSWORD=secret \
-            -e MYSQL_DATABASE=db \
-            -e API_MONGO_USER=foo \
-            -e API_MONGO_PASSWORD=secret \
-            -e TEST=1 \
-            ghcr.io/freva-clint/freva-${{ matrix.service }} healthchecks
+          bash local-build.sh --check
 
       - name: Build and push multi-arch image
         # if: ${{ github.ref == 'refs/heads/main' }}
@@ -73,7 +50,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
-            SYSTEM=${{ matrix.service }}
+            SERVICE=${{ matrix.service }}
           push: true
           load: false
           no-cache: true

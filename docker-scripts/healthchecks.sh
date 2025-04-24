@@ -30,6 +30,15 @@ case "$SERVICE" in
             >/dev/null 2>&1
         ;;
     redis)
+        if [ -f "/tmp/redis-server.pid" ];then
+            read redis_pid < "/tmp/redis-server.pid"
+            if kill -0 $redis_pid 2>/dev/null ; then
+                exit 0
+            fi
+        fi
+        echo "Redis-server not running"
+        exit 1
+
         if ! pgrep -x redis-server > /dev/null; then
             exit 1
         fi

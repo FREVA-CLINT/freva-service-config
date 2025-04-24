@@ -43,7 +43,6 @@ if [ -n "$REDIS_USER" ]; then
 fi
 
 
-mkdir -p "$REDIS_DATA_DIR" "$REDIS_LOG_DIR"
 
 echo "user ${REDIS_USER:-default} on +@all ~* &* ${REDIS_PASSWORD:-nopass}" >> "$REDIS_CONFIG"
 
@@ -70,10 +69,10 @@ EOF
 fi
 
 # Directories and final config
-echo "dir $REDIS_DATA_DIR" >> "$REDIS_CONFIG"
-echo "logfile $REDIS_LOG_DIR/redis.log" >> "$REDIS_CONFIG"
-
+echo "dir $DATA_DIR" >> "$REDIS_CONFIG"
+echo "logfile $LOG_DIR/redis.log" >> "$REDIS_CONFIG"
+echo "pidfile /tmp/redis-server.pid" >> "$REDIS_CONFIG"
 echo "Created Redis with config:"
 cat "$REDIS_CONFIG"
-echo -e "################### START: $(date) ###################\n" >  $REDIS_LOG_DIR/redis.log
+echo -e "################### START: $(date) ###################\n" >  $LOG_DIR/redis.log
 redis-server "$REDIS_CONFIG"

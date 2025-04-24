@@ -10,6 +10,16 @@ those services are:
 - Redis
 - Keycloak Open ID Connect service via OpenLDAP federation
 
+### Building the containers images locally
+Use `./local-build.sh` to build all service images locally.
+Add the --check flag to run built-in healthchecks after the build.
+The script supports both Docker and Podman, and will fail immediately
+if any build or check fails:
+
+```console
+bash local-build.sh --check
+```
+
 ## Production Usage
 > [!CAUTION]
 > A manual setup of the service will most likely fail. You should set up this

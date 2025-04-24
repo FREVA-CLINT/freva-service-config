@@ -1,0 +1,43 @@
+name: 🔁 Update Conda Package Versions
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Every day at 03:00 UTC
+  workflow_dispatch:     # Allow manual trigger
+
+jobs:
+  update-conda:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # needed for PRs from branches
+
+      - name: 🛠 Install micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: bash
+          micromamba-version: 'latest'
+          environment-name: base
+          cache-environment: true
+          post-cleanup: 'all'
+
+      - name: 🔄 Run conda package updater
+        run: |
+          chmod +x .update-conda-packages.sh
+          ./.update-conda-packages.sh
+        shell: bash -el {0}
+
+      - name: 📬 Create or update pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update conda package versions"
+          title: "🔄 Update conda package versions"
+          body: |
+            This PR updates all pinned packages in `requirements.txt` files to their latest versions from conda-forge.
+          branch: "conda-update/$(date +%F)"
+          delete-branch: true

@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-CONDA_PREFIX=$(readlink -f ${CONDA_PREFIX:-$(dirname $0)../../../)})
-DATA_DIR=${API_DATA_DIR:-/data/db}
-LOG_DIR=${API_LOG_DIR:-/data/logs}
-CONFIG_DIR=${API_CONFIG_DIR:-/data/config}
 set  -o nounset -o pipefail -o errexit
-mkdir -p $LOG_DIR $DATA_DIR $CONFIG_DIR
+export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
+export SERVICE=mongo
+source ${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh
+PID_DIR=/tmp/mongo
+mkdir $PID_DIR
+set  -o nounset -o pipefail -o errexit
+
 API_MONGO_HOST=${API_MONGO_HOST:-localhost:27017}
 API_MONGO_DB=${API_MONGO_DB:-search_stats}
-trap 'mongod -f $CONFIG_DIR/mongod.yaml --shutdown' SIGINT SIGTERM ERR
 temp_dir=$(mktemp -d)
+trap "rm -rf $temp_dir && mongod -f $CONFIG_DIR/mongod.yaml --shutdown" EXIT SIGINT SIGTERM ERR
+
 cat <<EOI > $CONFIG_DIR/mongod.yaml
 # MongoDB Configuration File
 
@@ -60,11 +63,10 @@ except Exception as e:
     print('Failed to create user {}: {}'.format("$API_MONGO_USER", e))
     raise
 EOI
+
 mongod -f $CONFIG_DIR/mongod.yaml --noauth --fork
 sleep 5
 python $temp_dir/init_mongo.py
 mongod -f $CONFIG_DIR/mongod.yaml --shutdown &
 rm -fr $temp_dir
-if [ "${START_MONGO:-}" ];then
-    mongod -f $CONFIG_DIR/mongod.yaml --auth  --cpu
-fi
+mongod -f $CONFIG_DIR/mongod.yaml --auth  --cpu

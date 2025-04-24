@@ -33,7 +33,7 @@ jobs:
       - name: Extract version from image
         id: version
         run: |
-          VERSION=$(bash version-inspect.sh ${{ matrix.service }} | tr -d '\r\n')
+          VERSION=$(bash head -n 1 ${{ matrix.service }}/requirements.txt | cut -d = -f2)
           echo "Detected version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -51,11 +51,30 @@ jobs:
         with:
           context: ${{ matrix.service }}
           file: ${{ matrix.service }}/Dockerfile
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
           build-args: VERSION=${{ steps.version.outputs.version }}
-          # push: ${{ steps.push.outputs.push }}
-          push: true
+          build-args: SYSTEM=${{ matrix.service }}
+          push: false
+          load: true
           no-cache: true
           tags: |
             ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
             ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}
+
+      - name: Checking the built image
+        run:
+          docker run --rm \
+            -e MYSQL_ROOT_PASSWORD=foo \
+            -e MYSQL_USER=bar \
+            -e MYSQL_PASSWORD=secret \
+            -e MYSQL_DATABASE=db \
+            -e API_MONGO_USER=foo \
+            -e API_MONGO_PASSWORD=secret \
+            -e TEST=1 \
+            ghcr.io/freva-clint/freva-${{ matrix.service }} healthchecks
+
+      - name: Push image (after successful healthcheck)-
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
+          docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}

@@ -1,0 +1,2 @@
+redis-server=7.4.0
+jq

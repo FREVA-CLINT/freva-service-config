@@ -37,21 +37,12 @@ jobs:
           echo "Detected version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Set push flag
-        id: push
-        run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-            echo "push=true" >> $GITHUB_OUTPUT
-          else
-            echo "push=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build image
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.service }}
           file: ${{ matrix.service }}/Dockerfile
-          platforms: linux/amd64, linux/arm64, linux/ppc64le
+          platforms: linux/amd64
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
             SYSTEM=${{ matrix.service }}
@@ -60,7 +51,6 @@ jobs:
           no-cache: true
           tags: |
             ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
-            ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}
 
       - name: Checking the built image
         run:
@@ -74,8 +64,19 @@ jobs:
             -e TEST=1 \
             ghcr.io/freva-clint/freva-${{ matrix.service }} healthchecks
 
-      - name: Push image (after successful healthcheck)-
+      - name: Build and push multi-arch image
         # if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
-          docker push ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.service }}
+          file: ${{ matrix.service }}/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            SYSTEM=${{ matrix.service }}
+          push: true
+          load: false
+          no-cache: true
+          tags: |
+            ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
+            ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}

@@ -41,8 +41,16 @@ jobs:
         run:
           bash local-build.sh --check --service=${{ matrix.service }}
 
+      - name: Set push flag
+        id: push
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "push=true" >> $GITHUB_OUTPUT
+          else
+            echo "push=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and push multi-arch image
-        # if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -51,6 +59,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
             SERVICE=${{ matrix.service }}
+          # push: ${{ steps.push.outputs.push }}
           push: true
           load: false
           no-cache: true

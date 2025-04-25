@@ -3,8 +3,48 @@
 # Perform a healthcheck for the specified service.
 set -o nounset -o pipefail -o errexit
 
+SERVICE=${SERVICE:-}
+
+print_help() {
+  cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Perform a healthcheck for a Freva service.
+
+Options:
+  -s, --service <name>   Name of the service (mongo, mysql, redis, solr)
+  -t, --test             Start the service in test mode
+  -h, --help             Show this help message and exit
+EOF
+}
+
+
+#  Parse CLI args
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -s|--service)
+      SERVICE="$2"
+      shift 2
+      ;;
+    -t|--test)
+      TEST=true
+      shift
+      ;;
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    *)
+      echo "❌ Unknown argument: $1" >&2
+      print_help
+      exit 1
+      ;;
+  esac
+done
+
+
 if [ "${TEST:-}" ]; then
-    /usr/local/bin/start-service &
+    start-service $SERVICE &
     PID=$!
     sleep 10
     trap "kill -9 $PID &> /dev/null || true" EXIT
@@ -25,10 +65,12 @@ case "$SERVICE" in
         exit 1
         ;;
     mongo)
+        MONGO_DB=${API_MONGO_DB:-search_stats}
         echo "import os" > /tmp/test.py
         echo "import pymongo" >> /tmp/test.py
         echo "" >> /tmp/test.py
-        echo "pymongo.MongoClient('mongodb://$API_MONGO_USER:$API_MONGO_PASSWORD@localhost:27017?timeoutMS=2000').list_database_names()" >> /tmp/test.py
+        echo "dbs = pymongo.MongoClient('mongodb://$API_MONGO_USER:$API_MONGO_PASSWORD@localhost:27017?timeoutMS=2000').list_database_names()" >> /tmp/test.py
+        echo "assert '$MONGO_DB' in dbs"
         cat /tmp/test.py
         python /tmp/test.py
         ;;

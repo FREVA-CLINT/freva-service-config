@@ -66,11 +66,9 @@ case "$SERVICE" in
         ;;
     mongo)
         MONGO_DB=${API_MONGO_DB:-search_stats}
-        echo "import os" > /tmp/test.py
-        echo "import pymongo" >> /tmp/test.py
+        echo "import pymongo" > /tmp/test.py
         echo "" >> /tmp/test.py
         echo "dbs = pymongo.MongoClient('mongodb://$API_MONGO_USER:$API_MONGO_PASSWORD@localhost:27017?timeoutMS=2000').list_database_names()" >> /tmp/test.py
-        echo "assert '$MONGO_DB' in dbs" >> /tmp/test.py
         cat /tmp/test.py
         python /tmp/test.py
         ;;

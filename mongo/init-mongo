@@ -5,8 +5,6 @@ export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
 export SERVICE=mongo
 source "${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh"
 
-PID_DIR="/tmp/mongo"
-mkdir -p "$PID_DIR"
 PID_FILE="/tmp/mongod.pid"
 
 API_MONGO_HOST=${API_MONGO_HOST:-localhost:27017}
@@ -15,11 +13,10 @@ temp_dir=$(mktemp -d)
 
 function cleanup {
     echo "Shutting down MongoDB..."
-    if [[ -f "$PID_FILE" ]]; then
-        kill "$(cat "$PID_FILE")" || true
-        rm -f "$PID_FILE"
+    if mongod --shutdown -f "$CONFIG_DIR/mongod.yaml"; then
+        rm -rf "$temp_dir" $PID_FILE
+        echo "MongoDB shut down cleanly."
     fi
-    rm -rf "$temp_dir"
 }
 trap cleanup EXIT SIGINT SIGTERM ERR
 
@@ -76,8 +73,7 @@ EOF
 python "$temp_dir/init_mongo.py"
 
 # Shutdown noauth server
-kill "$(cat "$PID_FILE")"
-rm -f "$PID_FILE"
+cleanup
 
 # Final run: start MongoDB with auth and block
 rm -rf "$LOG_DIR"/*

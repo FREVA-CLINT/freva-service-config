@@ -43,7 +43,7 @@ fi
 
 ### Build and optionally test each service
 for service in "${SERVICES[@]}"; do
-  version=$(head -n 1 "$service/requirements.txt" | cut -d = -f2)
+  version=$(grep '=' "$service/requirements.txt" |grep -v '#' | head -n 1 | cut -d = -f2)
 
   echo "🔧 Building freva-$service:$version ..."
   $build_cmd \

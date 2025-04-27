@@ -31,14 +31,14 @@ for req_file in */requirements.txt; do
   [ -f "$req_file" ] || continue
 
   service=$(dirname "$req_file")
-  read -r first_line < "$req_file"
+  first_line=$(grep '=' $req_file | grep -v '#' | head -n 1)
   pkg=$(echo "$first_line" | cut -d= -f1)
   old_version=$(echo "$first_line" | cut -d= -f2)
 
   echo "📦 Checking latest version of $pkg for $service..."
 
   latest_version=$($TOOL search "$pkg" --channel "$CHANNEL" --json | \
-    jq -r '."result"."pkgs"[0].version')
+    jq -r ".[\"result\"][\"pkgs\"][0]| .version")
 
   if [[ -z "$latest_version" || "$latest_version" == "null" ]]; then
     echo "⚠️  Could not determine latest version for $pkg"

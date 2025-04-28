@@ -9,6 +9,7 @@ LABEL org.opencontainers.image.version="$VERSION"
 ENV    PYTHONUNBUFFERED=1 \
        IN_DOCKER=1 \
        SERVICE=${SERVICE}
+       PATH=/opt/conda/bin:${PATH}
 
 WORKDIR /tmp/app
 COPY . /tmp/app

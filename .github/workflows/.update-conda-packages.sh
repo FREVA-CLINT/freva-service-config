@@ -38,7 +38,7 @@ for req_file in */requirements.txt; do
   echo "📦 Checking latest version of $pkg for $service..."
 
   latest_version=$($TOOL search "$pkg" --channel "$CHANNEL" --json | \
-    jq -r ".[\"result\"][\"pkgs\"][0]| .version")
+    jq -r ".[\"result\"][\"pkgs\"]| map(.version) | max_by( split(\".\") | map(tonumber) )")
 
   if [[ -z "$latest_version" || "$latest_version" == "null" ]]; then
     echo "⚠️  Could not determine latest version for $pkg"

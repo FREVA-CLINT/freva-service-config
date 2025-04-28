@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.source="https://github.com/FREVA-CLINT/freva-next
 LABEL org.opencontainers.image.version="$VERSION"
 ENV    PYTHONUNBUFFERED=1 \
        IN_DOCKER=1 \
-       SERVICE=${SERVICE}
+       SERVICE=${SERVICE} \
        PATH=/opt/conda/bin:${PATH}
 
 WORKDIR /tmp/app

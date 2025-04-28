@@ -34,4 +34,5 @@ RUN  set -eux && \
      rm -rf /tmp/app
 
 WORKDIR /tmp
+VOLUME /data/db /data/logs
 CMD ["/usr/local/bin/start-service"]

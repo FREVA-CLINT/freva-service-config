@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
+export SERVICE=mongo
+source "${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh"
+
+PID_FILE="/tmp/mongod.pid"
+
+API_MONGO_HOST=${API_MONGO_HOST:-localhost:27017}
+API_MONGO_DB=${API_MONGO_DB:-search_stats}
+temp_dir=$(mktemp -d)
+
+function cleanup {
+    echo "Shutting down MongoDB..."
+    if mongod --shutdown -f "$CONFIG_DIR/mongod.yaml"; then
+        rm -rf "$temp_dir" $PID_FILE
+        echo "MongoDB shut down cleanly."
+    fi
+}
+trap cleanup EXIT SIGINT SIGTERM ERR
+
+# Generate config
+cat <<EOI > "$CONFIG_DIR/mongod.yaml"
+storage:
+  dbPath: $DATA_DIR
+  journal:
+    enabled: true
+
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+
+security:
+  authorization: enabled
+
+processManagement:
+  fork: false
+  pidFilePath: $PID_FILE
+
+systemLog:
+  destination: file
+  logAppend: true
+  path: $LOG_DIR/mongod.log
+EOI
+
+# Init user with --noauth mode
+mongod --fork -f "$CONFIG_DIR/mongod.yaml" --noauth
+sleep 5
+
+cat > "$temp_dir/init_mongo.py" <<EOF
+import os
+from pymongo import MongoClient
+from pymongo.errors import OperationFailure
+
+client = MongoClient("$API_MONGO_HOST")
+db = client["admin"]
+try:
+    db.command("dropUser", "$API_MONGO_USER")
+except OperationFailure:
+    pass
+try:
+    db.command(
+        "createUser", "$API_MONGO_USER",
+        pwd="$API_MONGO_PASSWORD",
+        roles=["userAdminAnyDatabase", "readWriteAnyDatabase"]
+    )
+except Exception as e:
+    print(f"Failed to create user: {e}")
+    raise
+EOF
+
+python "$temp_dir/init_mongo.py"
+
+# Shutdown noauth server
+cleanup
+
+# Final run: start MongoDB with auth and block
+rm -rf "$LOG_DIR"/*
+mongod -f "$CONFIG_DIR/mongod.yaml" --auth --cpu

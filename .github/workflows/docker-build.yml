@@ -1,0 +1,69 @@
+name: Build and Push Freva Service Images
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [mongo, mysql, redis, solr]
+
+    steps:
+
+      - name: Set push flag
+        id: push
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "push=true" >> $GITHUB_OUTPUT
+          else
+            echo "push=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        if: ${{ steps.push.outputs.push }} == "true"
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Extract version from image
+        id: version
+        run: |
+          VERSION=$(grep '=' ${{ matrix.service }}/requirements.txt | grep -v '#' | head -n 1| cut -d = -f2)
+          echo "Detected version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Checking the image builds
+        run:
+          bash local-build.sh --check --service=${{ matrix.service }}
+
+      - name: Build and push multi-arch image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            SERVICE=${{ matrix.service }}
+          push: ${{ steps.push.outputs.push }}
+          load: false
+          no-cache: true
+          tags: |
+            ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
+            ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set  -o nounset -o pipefail -o errexit
+export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
+export SERVICE=solr
+source ${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh
+set  -o nounset -o pipefail -o errexit
+
+temp_dir=$(mktemp -d)
+export SOLR_PORT=${API_SOLR_PORT:-8983}
+export SOLR_HEAP=${API_SOLR_HEAP:-4g}
+export SOLR_CORE=${API_SOLR_CORE:-files}
+export SOLR_LOGS_DIR=$LOG_DIR
+export SOLR_JETTY_HOST="0.0.0.0"
+export SOLR_PID_DIR=/tmp/$SERVICE
+
+trap "rm -rf $temp_dir" EXIT
+trap "solr stop -p $SOLR_PORT" SIGINT SIGTERM ERR
+mkdir $SOLR_PID_DIR
+configure_solr=false
+is_solr_running(){
+     curl -s "http://localhost:$1/solr/admin/info/system"| grep -q "solr_home"
+}
+for core in $SOLR_CORE latest;do
+    if [ ! -f "$DATA_DIR/$core/core.properties" ];then
+        configure_solr=true
+    fi
+    if $configure_solr ;then
+        if ! is_solr_running $SOLR_PORT ;then
+            echo "Starting Solr on port $SOLR_PORT ..."
+            solr start \
+                --force -m $SOLR_HEAP -s ${DATA_DIR} \
+                -p $SOLR_PORT -Dsolr.log.dir=$temp_dir -q --no-prompt &> $temp_dir/solr.log &
+            timeout 20 bash -c 'until curl -s http://localhost:'"$SOLR_PORT"'/solr/admin/ping;do sleep 2; done' ||{
+                echo "Error: Solr did not start within 60 seconds." >&2
+                cat $temp_dir/solr.log >&2
+            }
+        fi
+        echo "Creating core $core ..."
+        solr create -c $core --solr-url http://localhost:$SOLR_PORT
+        cp $CONFIG_DIR/*.{txt,xml} $DATA_DIR/$core/conf
+        curl http://localhost:$SOLR_PORT/solr/$core/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
+    fi
+done
+if $configure_solr ;then
+    solr stop -p $SOLR_PORT
+fi
+rm -rf "$temp_dir"
+solr start -f -force -s ${DATA_DIR}

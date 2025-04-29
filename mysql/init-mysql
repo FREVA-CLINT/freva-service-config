@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set  -o nounset -o pipefail -o errexit
+export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
+export SERVICE=mysql
+source ${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh
+
+temp_dir=$(mktemp -d)
+trap 'mysql.server stop &> /dev/null' EXIT SIGINT SIGTERM ERR
+cat    << EOI > $temp_dir/init.sql
+USE mysql;
+FLUSH PRIVILEGES;
+
+-- Ensure the root user exists and set the password
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+
+-- reset and set user password
+DROP USER IF EXISTS '$MYSQL_USER'@'%';
+DROP USER IF EXISTS '$MYSQL_USER'@'localhost';
+CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
+
+-- Root privileges
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+
+
+-- Create database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;
+
+-- Grant privileges
+GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';
+GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'localhost';
+
+FLUSH PRIVILEGES;
+USE \`$MYSQL_DATABASE\`;
+
+EOI
+cat $CONFIG_DIR/create_tables.sql >> $temp_dir/init.sql
+if [ ! -d $DATA_DIR/mysql ];then
+    mysqld --no-defaults \
+           --datadir=$DATA_DIR \
+           --initialize-insecure \
+           --user=$USER
+fi
+
+mysqld --no-defaults \
+       --datadir=$DATA_DIR \
+       --user=$USER \
+       --skip-grant-tables \
+       --skip-networking \
+       --init-file=$temp_dir/init.sql &
+MYSQLD_PID=$!
+sleep 5
+
+mysql.server stop &> /dev/null
+if [[ -n $MYSQLD_PID ]];then
+    kill $MYSQLD_PID &> /dev/null || true
+fi
+rm -fr $temp_dir
+echo "Init done! Starting mysqld server."
+mysqld \
+    --no-defaults \
+    --bind-address=0.0.0.0 \
+    --datadir=$DATA_DIR \
+    --user=$USER \
+    --pid-file=/tmp/mysqld.pid \
+    --general-log-file=$LOG_DIR/mysql.log

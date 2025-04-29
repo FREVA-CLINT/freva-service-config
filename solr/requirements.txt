@@ -1,0 +1,6 @@
+# The 1st package of this file MUST be the main conda package and have a version
+# attached.
+
+apache-solr=9.8.1
+curl
+procps-ng

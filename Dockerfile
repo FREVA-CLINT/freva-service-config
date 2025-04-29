@@ -30,7 +30,6 @@ RUN set -xue && \
  chmod +x /usr/local/bin/start-service /usr/local/bin/healthchecks
 
 RUN  set -eux && \
-     micromamba install -c conda-forge -q -y --override-channels gosu && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \
      chmod 666 -R /data /backup && \

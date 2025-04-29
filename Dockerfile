@@ -16,8 +16,8 @@ COPY . /tmp/app
 
 RUN set -xue && \
  ls -l /tmp/app/${SERVICE} && ls -l ${SERVICE} && \
- mkdir -p ${MAMBA_ROOT_PREFIX}/etc/profile.d  /data/config /data/db /data/logs &&\
- cp docker-scripts/vars.sh ${MAMBA_ROOT_PREFIX}/etc/profile.d/freva-rest-server.sh &&\
+ cp docker-scripts/entrypoint.sh /usr/local/bin/ &&\
+ chmod +x /usr/local/bin/entrypoint.sh && \
  cp ${SERVICE}/init-${SERVICE} /usr/local/bin/start-service &&\
  cp docker-scripts/healthchecks.sh /usr/local/bin/healthchecks &&\
  cp ${SERVICE}/*.txt /data/config/ 2> /dev/null || true && \
@@ -29,11 +29,13 @@ RUN set -xue && \
  chmod +x /usr/local/bin/start-service /usr/local/bin/healthchecks
 
 RUN  set -eux && \
+     micromamba install -c conda-forge -q -y --override-channels gosu && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
-     micromamba clean -y -i -t -l -f && \
-     mkdir -p /data/{db,logs,config} && \
+     micromamba clean -q -y -i -t -l -f && \
+     mkdir -p /data/{db,logs,config} /backup && \
+     chmod 666 -R /data /backup && \
      rm -rf /tmp/app
 
-WORKDIR /tmp
-VOLUME /data/db /data/logs
+WORKDIR /data
 CMD ["/usr/local/bin/start-service"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

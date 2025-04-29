@@ -19,6 +19,7 @@ RUN set -xue && \
  cp docker-scripts/entrypoint.sh /usr/local/bin/ &&\
  chmod +x /usr/local/bin/entrypoint.sh && \
  cp ${SERVICE}/init-${SERVICE} /usr/local/bin/start-service &&\
+ mkdir -p /data/{db,logs,config} /backup && \
  cp docker-scripts/healthchecks.sh /usr/local/bin/healthchecks &&\
  cp ${SERVICE}/*.txt /data/config/ 2> /dev/null || true && \
  cp ${SERVICE}/*.xml /data/config/ 2> /dev/null || true && \
@@ -32,7 +33,6 @@ RUN  set -eux && \
      micromamba install -c conda-forge -q -y --override-channels gosu && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \
-     mkdir -p /data/{db,logs,config} /backup && \
      chmod 666 -R /data /backup && \
      rm -rf /tmp/app
 

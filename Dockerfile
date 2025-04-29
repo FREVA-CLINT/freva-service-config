@@ -32,7 +32,7 @@ RUN set -xue && \
 RUN  set -eux && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \
-     chmod 666 -R /data /backup && \
+     chmod 1777 -R /data /backup && \
      rm -rf /tmp/app
 
 WORKDIR /data

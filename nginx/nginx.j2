@@ -8,7 +8,7 @@ events {
 }
 
 http {
-    include {{ env.get("MIME_TYPES", "/etc/nginx") }}/mime.types;
+    include {{ env.get("CONFIG_DIR", "/data/config") }}/mime.types;
     default_type application/octet-stream;
     sendfile on;
     keepalive_timeout 5;
@@ -37,20 +37,27 @@ http {
         add_header Strict-Transport-Security "max-age=15552000; includeSubdomains;" always;
         add_header X-Frame-Options "SAMEORIGIN";
 
+        error_page 404 500 502 503 504 /outoforder.html;
+
         location /static/ {
             alias {{ env.get("SERVER_ROOT", "/srv/static") }};
         }
 
         location /robots.txt {
-            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/robots.txt;
+            alias {{ env.get("CONFIG_DIR", "/data/config") }}/robots.txt;
         }
 
-        location /favicon.ico {
-            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/favicon.ico;
+        location /favicon.svg {
+            alias {{ env.get("TEMP_DIR", "/tmp") }}/favicon.svg;
         }
 
         location /under_construction.gif {
-            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/under_construction.gif;
+            alias {{ env.get("CONFIG_DIR", "/data/config") }}/under_construction.gif;
+        }
+
+        location = /outoforder.html {
+            root {{ env.get("TEMP_DIR", "/tmp") }};
+            internal;
         }
 
         location /api/freva-nextgen {

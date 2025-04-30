@@ -24,6 +24,7 @@ RUN set -xue && \
  cp ${SERVICE}/*.txt /data/config/ 2> /dev/null || true && \
  cp ${SERVICE}/*.xml /data/config/ 2> /dev/null || true && \
  cp ${SERVICE}/*.sql /data/config/ 2> /dev/null || true && \
+ cp ${SERVICE}/*.{types,j2,html,gif} /data/config/ 2> /dev/null || true && \
  rm -f /data/config/requirements.txt && \
  cp ${SERVICE}/daily_backup.sh /usr/local/bin/daily_backup || true &&\
  chmod +x /usr/local/bin/daily_backup 2> /dev/null || true &&\

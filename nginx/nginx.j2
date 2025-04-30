@@ -1,0 +1,91 @@
+user {{ env.get("USER", "nobody") }};
+worker_processes auto;
+error_log stderr info;
+pid {{ env.get("TEMP_DIR", "/tmp") }}/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include {{ env.get("MIME_TYPES", "/etc/nginx") }}/mime.types;
+    default_type application/octet-stream;
+    sendfile on;
+    keepalive_timeout 5;
+    server_tokens off;
+
+    upstream freva_backend {
+        server {{ env.get("WEB_SERVER_NAME", "localhost") }}:{{ env.get("WEB_SERVER_PORT", "8000") }};
+    }
+
+    upstream databrowser_backend {
+        server {{ env.get("FREVA_REST_HOST", "localhost") }};
+    }
+
+    server {
+        listen {{ env.get("PORT_HTTPSD", "443") }} ssl;
+        server_name {{ env.get("WEB_SERVER_NAME", "localhost") }};
+        root {{ env.get("SERVER_ROOT", "/srv/static") }};
+        index index.html;
+
+        ssl_certificate {{ env.get("SERVER_CERT_FILE", "/tmp/fullchain.pem") }};
+        ssl_certificate_key {{ env.get("SERVER_KEY_FILE", "/tmp/key.pem") }};
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256";
+        ssl_prefer_server_ciphers on;
+
+        add_header Strict-Transport-Security "max-age=15552000; includeSubdomains;" always;
+        add_header X-Frame-Options "SAMEORIGIN";
+
+        location /static/ {
+            alias {{ env.get("SERVER_ROOT", "/srv/static") }};
+        }
+
+        location /robots.txt {
+            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/robots.txt;
+        }
+
+        location /favicon.ico {
+            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/favicon.ico;
+        }
+
+        location /under_construction.gif {
+            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/under_construction.gif;
+        }
+
+        location /api/freva-nextgen {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+
+        location /api/databrowser/metadata_search {
+            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search;
+        }
+
+        location /api/databrowser/data_search {
+            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/data-search;
+        }
+
+        location /api/freva-data-portal {
+            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/data-portal;
+        }
+
+        location /api/auth {
+            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/auth;
+        }
+
+        location / {
+            proxy_pass http://{{ env.get("WEB_SERVER_NAME", "localhost") }}:{{ env.get("WEB_SERVER_PORT", "8000") }}/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+
+        error_log {{ env.get("LOG_DIR", "/tmp/nginx") }}/nginx-error.log;
+        access_log {{ env.get("LOG_DIR", "/tmp/nginx") }}/nginx-access.log;
+    }
+}

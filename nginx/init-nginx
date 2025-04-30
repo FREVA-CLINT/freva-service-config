@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -o nounset -o pipefail -o errexit
+
+temp_dir=$(mktemp -d)
+trap "rm -rf '$temp_dir'" EXIT
+
+export SERVICE=nginx
+
+# Download mime.types if not present
+if [ ! -f "$CONFIG_DIR/mime.types" ]; then
+    curl -sSL https://raw.githubusercontent.com/nginx/nginx/master/conf/mime.types \
+        -o "$CONFIG_DIR/mime.types"
+fi
+
+favicon(){
+    local fill_color="${1:-#f44336}"
+    cat << EOF
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="52">
+    🚧
+  </text>
+</svg>
+EOF
+
+}
+
+# Helper to render a Jinja2 template using python -c
+render_template() {
+  local template_path="$1"
+  local output_path="$2"
+
+  python3 -c "
+import os, sys
+from jinja2 import Environment, FileSystemLoader
+
+template_path = sys.argv[1]
+output_path = sys.argv[2]
+env = Environment(loader=FileSystemLoader(os.path.dirname(template_path)))
+template = env.get_template(os.path.basename(template_path))
+with open(output_path, 'w') as f:
+    f.write(template.render(env=os.environ))
+" "$template_path" "$output_path"
+}
+
+# Set defaults if not explicitly provided
+export SERVER_ROOT="${SERVER_ROOT:-$CONFIG_DIR}"
+export WEB_SERVER_NAME="${WEB_SERVER_NAME:-localhost}"
+export WEB_SERVER_PORT="${WEB_SERVER_PORT:-8000}"
+export SERVER_CERT_FILE="${SERVER_CERT_FILE:-/tmp/fullchain.pem}"
+export SERVER_KEY_FILE="${SERVER_KEY_FILE:-/tmp/privkey.pem}"
+export FILL_COLOR="${FILL_COLOR:-#f44336}"
+export TEMP_DIR=${temp_dir}
+SERVER_CERT="${SERVER_CERT:-}"
+SERVER_KEY="${SERVER_KEY:-}"
+
+# Create or decode SSL certs
+if [ ! -f "$SERVER_CERT_FILE" ] || [ ! -f "$SERVER_KEY_FILE" ]; then
+    if [ -z "$SERVER_CERT" ] || [ -z "$SERVER_KEY" ]; then
+        echo "⚠️  Generating self-signed SSL certificate"
+        openssl req -x509 -nodes -days 365 \
+            -newkey rsa:2048 \
+            -keyout "$SERVER_KEY_FILE" \
+            -out "$SERVER_CERT_FILE" \
+            -subj "/CN=$(hostname)" &>/dev/null
+    else
+        echo "$SERVER_CERT" | base64 --decode > "$SERVER_CERT_FILE"
+        echo "$SERVER_KEY" | base64 --decode > "$SERVER_KEY_FILE"
+    fi
+fi
+
+# Decide which config to render
+favicon $FILL_COLOR > $TEMP_DIR/favicon.svg
+if curl -sfI --max-time 3 "http://${WEB_SERVER_NAME}:${WEB_SERVER_PORT}" > /dev/null; then
+    echo "✅ Freva Web seems up - generating full nginx config."
+    render_template "$CONFIG_DIR/nginx.j2" "$temp_dir/nginx.conf"
+else
+    echo "❌ Freva Web seems down - generating out-of-order nginx config."
+    render_template "$CONFIG_DIR/nginx-outoforder.j2" "$temp_dir/nginx.conf"
+    cp $CONFIG_DIR/outoforder.html $TEMP_DIR/index.html
+    cp $TEMP_DIR/index.html $TEMP_DIR/404.html
+fi
+
+# Start Nginx
+nginx -c "$temp_dir/nginx.conf" -g "daemon off;"

@@ -75,9 +75,9 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Freva-Vault-URL "{{ env["VAULT_URL"] }}";
+            proxy_set_header X-Freva-Project "{{ env["PROJECT_NAME"] }}";
             proxy_set_header X-Freva-Config-Path "{{ env["EVALUATION_SYSTEM_CONFIG_FILE"] }}";
         }
-
 
         location /api/databrowser/metadata_search {
             proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search;

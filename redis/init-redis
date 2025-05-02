@@ -74,4 +74,4 @@ echo "pidfile /tmp/redis-server-${REDIS_PORT:-6379}.pid" >> "$REDIS_CONFIG"
 echo "Created Redis with config:"
 cat "$REDIS_CONFIG"
 echo -e "################### START: $(date) ###################\n" >  $LOG_DIR/redis.log
-# redis-server "$REDIS_CONFIG"
+redis-server "$REDIS_CONFIG"

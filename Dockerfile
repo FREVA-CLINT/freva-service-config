@@ -30,6 +30,23 @@ RUN set -xue && \
  chmod +x /usr/local/bin/daily_backup 2> /dev/null || true &&\
  chmod +x /usr/local/bin/start-service /usr/local/bin/healthchecks
 
+RUN set -eu \
+     && for user in sync news uucp irc list lp games gnats ftp man proxy operator talk nobody _apt;do\
+       deluser $user 2> /dev/null || true;\
+     done \
+     && delgroup mambauser || true \
+     && rm -rf /home/mambauser || true \
+     && delgroup nogroup || true \
+     && addgroup --system --gid 65534 nobody || true \
+     && adduser \
+    --system \
+    --uid 65534 \
+    --gid 65534 \
+    --no-create-home \
+    --disabled-password \
+    --shell /usr/sbin/nologin \
+    nobody
+
 RUN  set -eux && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \

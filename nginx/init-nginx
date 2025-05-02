@@ -61,6 +61,7 @@ with open(output_path, 'w') as f:
 
 # Set defaults if not explicitly provided
 export SERVER_ROOT="${SERVER_ROOT:-$CONFIG_DIR}"
+export CHATBOT_HOST="${CHATBOT_HOST:-localhost}"
 export WEB_SERVER_NAME="${WEB_SERVER_NAME:-localhost}"
 export WEB_SERVER_PORT="${WEB_SERVER_PORT:-8000}"
 export SERVER_CERT_FILE="${SERVER_CERT_FILE:-/tmp/fullchain.pem}"
@@ -84,6 +85,8 @@ if [ ! -f "$SERVER_CERT_FILE" ] || [ ! -f "$SERVER_KEY_FILE" ]; then
         echo "$SERVER_KEY" | base64 --decode > "$SERVER_KEY_FILE"
     fi
 fi
+SHA512=$(sha512sum $SERVER_CERT_FILE| awk '{print $1}')
+export VAULT_URL=http://${VAULT_HOST:-localhost:5002}/vault/data/${SHA512}
 
 # Decide which config to render
 favicon $FILL_COLOR > $TEMP_DIR/favicon.svg

@@ -68,24 +68,35 @@ http {
             proxy_set_header X-Forwarded-Proto https;
         }
 
+        location /api/chatbot {
+            proxy_pass http://{{ env.get("CHATBOT_HOST", "localhost") }}/api/chatbot;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Freva-Vault-URL "{{ env["VAULT_URL"] }}";
+            proxy_set_header X-Freva-Config-Path "{{ env["EVALUATION_SYSTEM_CONFIG_FILE"] }}";
+        }
+
+
         location /api/databrowser/metadata_search {
-            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search;
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search;
         }
 
         location /api/databrowser/data_search {
-            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/data-search;
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/data-search;
         }
 
         location /api/freva-data-portal {
-            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/data-portal;
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/data-portal;
         }
 
         location /api/auth {
-            proxy_pass http://{{ env.get("WEB_FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/auth;
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/auth;
         }
 
         location / {
-            proxy_pass http://{{ env.get("WEB_SERVER_NAME", "localhost") }}:{{ env.get("WEB_SERVER_PORT", "8000") }}/;
+            proxy_pass http://{{ env.get("SERVER_NAME", "localhost") }}:{{ env.get("WEB_SERVER_PORT", "8000") }}/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

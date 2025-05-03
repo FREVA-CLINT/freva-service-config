@@ -40,7 +40,7 @@ http {
         error_page 404 500 502 503 504 /outoforder.html;
 
         location /static/ {
-            alias {{ env.get("SERVER_ROOT", "/srv/static") }};
+            alias {{ env.get("SERVER_ROOT", "/srv/static") }}/;
         }
 
         location /robots.txt {
@@ -60,16 +60,16 @@ http {
             internal;
         }
 
-        location /api/freva-nextgen {
-            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen;
+        location /api/freva-nextgen/ {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
         }
 
-        location /api/chatbot {
-            proxy_pass http://{{ env.get("CHATBOT_HOST", "localhost") }}/api/chatbot;
+        location /api/chatbot/ {
+            proxy_pass http://{{ env.get("CHATBOT_HOST", "localhost") }}/api/chatbot/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -80,20 +80,20 @@ http {
             proxy_set_header X-Freva-Config-Path "{{ env["EVALUATION_SYSTEM_CONFIG_FILE"] }}";
         }
 
-        location /api/databrowser/metadata_search {
-            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search;
+        location /api/databrowser/metadata_search/ {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/metadata-search/;
         }
 
-        location /api/databrowser/data_search {
-            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/data-search;
+        location /api/databrowser/data_search/ {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/databrowser/data-search/;
         }
 
-        location /api/freva-data-portal {
-            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/data-portal;
+        location /api/freva-data-portal/ {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/data-portal/;
         }
 
-        location /api/auth {
-            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/auth;
+        location /api/auth/ {
+            proxy_pass http://{{ env.get("FREVA_REST_HOST", "localhost") }}/api/freva-nextgen/auth/;
         }
 
         location / {

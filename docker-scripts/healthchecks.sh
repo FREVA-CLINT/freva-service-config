@@ -73,8 +73,8 @@ case "$SERVICE" in
         python /tmp/test.py
         ;;
     redis)
-        if [ -f "/tmp/redis-server.pid" ];then
-            read redis_pid < "/tmp/redis-server.pid"
+        if [ -f "/tmp/redis-server-${REDIS_PORT:-6379}.pid" ];then
+            read redis_pid < "/tmp/redis-server-${REDIS_PORT:-6379}.pid"
             if kill -0 $redis_pid 2>/dev/null ; then
                 exit 0
             fi
@@ -86,6 +86,9 @@ case "$SERVICE" in
             exit 1
         fi
         redis-cli ping | grep -q PONG
+        ;;
+    nginx)
+        curl -s https://localhost/ --insecure || exit 1
         ;;
     *)
         echo "❌ Unknown service: $SERVICE" >&2

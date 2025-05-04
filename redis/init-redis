@@ -2,15 +2,13 @@
 #
 # Initialize the Freva Redis instance with TLS and ACL support.
 set  -o nounset -o pipefail -o errexit
-export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
-export SERVICE=mysql
-source ${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh
+export SERVICE=redis
 
 
 TMP_DIR=$(mktemp -d --suffix=_redis -q)
 REDIS_CONFIG="$TMP_DIR/redis.conf"
 CONFIG="$CONFIG_DIR/data-portal-cluster-config.json"
-    JSON="{}"
+JSON="{}"
 
 trap 'rm -rf "$TMP_DIR"' EXIT INT TERM
 
@@ -49,7 +47,6 @@ echo "user ${REDIS_USER:-default} on +@all ~* &* ${REDIS_PASSWORD:-nopass}" >> "
 # Logging config
 echo "loglevel ${REDIS_LOGLEVEL:-notice}" >> "$REDIS_CONFIG"
 echo "syslog-enabled yes" >> "$REDIS_CONFIG"
-
 # TLS setup
 if [ -n "$REDIS_CERT" ] && [ -n "$REDIS_KEY" ]; then
     echo "$REDIS_CERT" > "$API_REDIS_SSL_CERTFILE"
@@ -60,18 +57,20 @@ fi
 if [ -f "$REDIS_SSL_CERTFILE" ] && [ -f "$REDIS_SSL_KEYFILE" ];then
     cat >> "$REDIS_CONFIG" <<EOF
 port 0
-tls-port 6379
+tls-port ${REDIS_PORT:-6379}
 tls-cert-file $API_REDIS_SSL_CERTFILE
 tls-key-file $API_REDIS_SSL_KEYFILE
 tls-ca-cert-file $API_REDIS_SSL_CERTFILE
 tls-protocols TLSv1.3
 EOF
+else
+    echo port ${REDIS_PORT:-6379} >> ${REDIS_CONFIG}
 fi
 
 # Directories and final config
 echo "dir $DATA_DIR" >> "$REDIS_CONFIG"
-echo "logfile $LOG_DIR/redis.log" >> "$REDIS_CONFIG"
-echo "pidfile /tmp/redis-server.pid" >> "$REDIS_CONFIG"
+echo "logfile $LOG_DIR/redis-${REDIS_PORT:-6379}.log" >> "$REDIS_CONFIG"
+echo "pidfile /tmp/redis-server-${REDIS_PORT:-6379}.pid" >> "$REDIS_CONFIG"
 echo "Created Redis with config:"
 cat "$REDIS_CONFIG"
 echo -e "################### START: $(date) ###################\n" >  $LOG_DIR/redis.log

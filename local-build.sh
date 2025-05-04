@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+temp_dir=$(mktemp -d)
 set -o nounset -o pipefail -o errexit
+
+trap "rm -rf $temp_dir" EXIT
 
 DO_CHECK=false
 SERVICE=""
@@ -21,7 +24,19 @@ if command -v podman > /dev/null; then
   cmd=podman
   build_cmd="$cmd build --format docker --no-cache"
 fi
+CERT_FILE="${temp_dir}/fullchain.pem"
+KEY_FILE="${temp_dir}/privkey.pem"
 
+$cmd run --rm -v ${temp_dir}:/keys:z -it docker.io/alpine sh -c '
+apk add --no-cache openssl > /dev/null
+CERT=/keys/fullchain.pem
+KEY=/keys/privkey.pem
+openssl req -x509 -nodes -days 365 \
+  -newkey rsa:2048 \
+  -keyout "$KEY" \
+  -out "$CERT" \
+  -subj "/CN=localhost" &> /dev/null
+'
 ### Shared environment for test runs
 ENV_VARS=(
   -e MYSQL_ROOT_PASSWORD=foo
@@ -31,10 +46,12 @@ ENV_VARS=(
   -e API_MONGO_USER=foo
   -e API_MONGO_PASSWORD=secret
   -e TEST=1
+  -e SERVER_KEY=$(base64 -w 0 "$KEY_FILE")
+  -e SERVER_CERT=$(base64 -w 0 "$CERT_FILE")
 )
 
 ### Determine which services to build
-ALL_SERVICES=(mysql solr mongo redis)
+ALL_SERVICES=(mysql solr mongo redis nginx)
 if [[ -n "$SERVICE" ]]; then
   SERVICES=("$SERVICE")
 else

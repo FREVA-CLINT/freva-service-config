@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export CONDA_PREFIX=${CONDA_PREFIX:-${MAMBA_ROOT_PREFIX:-}}
 export SERVICE=mongo
-source "${CONDA_PREFIX}/etc/profile.d/freva-rest-server.sh"
 
 PID_FILE="/tmp/mongod.pid"
 

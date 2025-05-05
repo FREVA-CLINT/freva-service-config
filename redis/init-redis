@@ -12,7 +12,11 @@ JSON="{}"
 
 trap 'rm -rf "$TMP_DIR"' EXIT INT TERM
 
-if [ "${CONFIG_CONTENT:-}" ];then
+if [ "${OVERRIDE:-0}" = "1" ];then
+    rm -r $CONFIG
+fi
+
+if ([ "${CONFIG_CONTENT:-}" ] && [ ! -f "$CONFIG" ]);then
     mkdir -p $CONFIG_DIR
     echo "$CONFIG_CONTENT" > $CONFIG
 fi

@@ -53,18 +53,18 @@ echo "loglevel ${REDIS_LOGLEVEL:-notice}" >> "$REDIS_CONFIG"
 echo "syslog-enabled yes" >> "$REDIS_CONFIG"
 # TLS setup
 if [ -n "$REDIS_CERT" ] && [ -n "$REDIS_KEY" ]; then
-    echo "$REDIS_CERT" > "$API_REDIS_SSL_CERTFILE"
-    echo "$REDIS_KEY" > "$API_REDIS_SSL_KEYFILE"
-    chmod 0600 "$API_REDIS_SSL_CERTFILE" "$API_REDIS_SSL_KEYFILE"
+    echo "$REDIS_CERT" > "$REDIS_SSL_CERTFILE"
+    echo "$REDIS_KEY" > "$REDIS_SSL_KEYFILE"
+    chmod 0600 "$REDIS_SSL_CERTFILE" "$REDIS_SSL_KEYFILE"
 fi
 
 if [ -f "$REDIS_SSL_CERTFILE" ] && [ -f "$REDIS_SSL_KEYFILE" ];then
     cat >> "$REDIS_CONFIG" <<EOF
 port 0
 tls-port ${REDIS_PORT:-6379}
-tls-cert-file $API_REDIS_SSL_CERTFILE
+tls-cert-file $REDIS_SSL_CERTFILE
 tls-key-file $API_REDIS_SSL_KEYFILE
-tls-ca-cert-file $API_REDIS_SSL_CERTFILE
+tls-ca-cert-file $REDIS_SSL_CERTFILE
 tls-protocols TLSv1.3
 EOF
 else

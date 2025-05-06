@@ -158,7 +158,7 @@ export PATH=$PREFIX/bin:$PATH
 SERVICE_SCRIPT=$PREFIX/libexec/$PKG_NAME/init-\$SERVICE
 source $PREFIX/etc/profile.d/freva-rest-server.sh
 trap "rm -rf /tmp/\$SERVICE || true" EXIT
-\$SERVICE_SCRIPT
+exec \$SERVICE_SCRIPT
 EOI
 chmod +x $PREFIX/bin/start-freva-service
 exit_func 0

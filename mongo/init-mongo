@@ -75,4 +75,4 @@ cleanup
 
 # Final run: start MongoDB with auth and block
 rm -rf "$LOG_DIR"/*
-mongod -f "$CONFIG_DIR/mongod.yaml" --auth --cpu
+exec mongod -f "$CONFIG_DIR/mongod.yaml" --auth --cpu

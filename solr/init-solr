@@ -42,4 +42,4 @@ if $configure_solr ;then
     solr stop -p $SOLR_PORT
 fi
 rm -rf "$temp_dir"
-solr start -f -force -s ${DATA_DIR}
+exec solr start -f -force -s ${DATA_DIR}

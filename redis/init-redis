@@ -63,7 +63,7 @@ if [ -f "$REDIS_SSL_CERTFILE" ] && [ -f "$REDIS_SSL_KEYFILE" ];then
 port 0
 tls-port ${REDIS_PORT:-6379}
 tls-cert-file $REDIS_SSL_CERTFILE
-tls-key-file $API_REDIS_SSL_KEYFILE
+tls-key-file $REDIS_SSL_KEYFILE
 tls-ca-cert-file $REDIS_SSL_CERTFILE
 tls-protocols TLSv1.3
 EOF

@@ -10,7 +10,7 @@ export SOLR_LOGS_DIR=$LOG_DIR
 export SOLR_JETTY_HOST="0.0.0.0"
 export SOLR_PID_DIR=/tmp/$SERVICE
 
-mkdir $SOLR_PID_DIR
+mkdir -p $SOLR_PID_DIR
 
 clenup(){
     rm -fr $SOLR_PID_DIR

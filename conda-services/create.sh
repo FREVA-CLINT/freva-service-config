@@ -55,7 +55,7 @@ exit_func(){
 check_for_git_reop(){
     for service in ${SERVICES[@]};do
         if [ ! -f $service/requirements.txt ];then
-            git clone --recursive -b add-conda-recipe https://github.com/FREVA-CLINT/freva-service-config.git $TEMP_DIR
+            git clone --recursive https://github.com/FREVA-CLINT/freva-service-config.git $TEMP_DIR
             cd $TEMP_DIR
             break
         fi

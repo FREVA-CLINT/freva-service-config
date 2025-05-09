@@ -10,9 +10,15 @@ export SOLR_LOGS_DIR=$LOG_DIR
 export SOLR_JETTY_HOST="0.0.0.0"
 export SOLR_PID_DIR=/tmp/$SERVICE
 
-trap "rm -rf $temp_dir" EXIT
-trap "solr stop -p $SOLR_PORT" SIGINT SIGTERM ERR
 mkdir $SOLR_PID_DIR
+
+clenup(){
+    rm -fr $SOLR_PID_DIR
+    rm -rf $temp_dir
+    solr stop -p $SOLR_PORT
+}
+trap cleanup EXIT
+
 configure_solr=false
 is_solr_running(){
      curl -s "http://localhost:$1/solr/admin/info/system"| grep -q "solr_home"

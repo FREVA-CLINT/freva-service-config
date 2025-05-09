@@ -99,4 +99,4 @@ render_template "$CONFIG_DIR/nginx.j2" "$temp_dir/nginx.conf"
 touch "$LOG_DIR/nginx-error.log" "$LOG_DIR/nginx-access.log"
 chmod -R 1777 $temp_dir $LOG_DIR/*.log
 # Start Nginx
-nginx -e "$LOG_DIR/nginx-error.log" -p "$temp_dir" -c "$temp_dir/nginx.conf" -g "daemon off;"
+exec nginx -e "$LOG_DIR/nginx-error.log" -p "$temp_dir" -c "$temp_dir/nginx.conf" -g "daemon off;"

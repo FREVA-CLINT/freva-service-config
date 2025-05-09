@@ -1,4 +1,4 @@
-user {{ env.get("PROXY_USER", "nobody") }};
+user {{ env.get("PROXY_USER", "nobody") }} {{ env.get("PROXY_GRPUP", "") }};
 worker_processes auto;
 error_log stderr info;
 pid {{ env.get("TEMP_DIR", "/tmp") }}/nginx.pid;

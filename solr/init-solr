@@ -43,7 +43,13 @@ for core in $SOLR_CORE latest;do
         cp $CONFIG_DIR/*.{txt,xml} $DATA_DIR/$core/conf
         curl http://localhost:$SOLR_PORT/solr/$core/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
     fi
-done
+    for file in managed-schema.xml synonyms.txt; do
+        if [ ! -f "$DATA_DIR/$core/conf/$file" ];then
+            rm -f "$DATA_DIR/$core/conf/$file" 2> /dev/null
+            cp "$CONFIG_DIR/$file" "$DATA_DIR/$core/conf/"
+        fi
+    done
+ done
 if $configure_solr ;then
     solr stop -p $SOLR_PORT
 fi

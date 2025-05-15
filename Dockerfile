@@ -26,8 +26,8 @@ RUN set -xue && \
  cp ${SERVICE}/*.sql /data/config/ 2> /dev/null || true && \
  cp ${SERVICE}/*.{types,j2,html,gif} /data/config/ 2> /dev/null || true && \
  rm -f /data/config/requirements.txt && \
- cp ${SERVICE}/daily_backup.sh /usr/local/bin/daily_backup || true &&\
- chmod +x /usr/local/bin/daily_backup 2> /dev/null || true &&\
+ cp docker-scripts/daily-backup.sh /usr/local/bin/daily-backup &&\
+ chmod +x /usr/local/bin/daily-backup &&\
  chmod +x /usr/local/bin/start-service /usr/local/bin/healthchecks
 
 RUN set -eu \

@@ -93,6 +93,7 @@ for service in "${SERVICES[@]}";do
     done
     rm -f $PREFIX/share/$PKG_NAME/$service/requirements.txt
     cp docker-scripts/healthchecks.sh $PREFIX/libexec/$PKG_NAME/
+    cp docker-scripts/daily-backup.sh $PREFIX/libexec/$PKG_NAME/
     chmod +x $PREFIX/libexec/$PKG_NAME/*
 done
 

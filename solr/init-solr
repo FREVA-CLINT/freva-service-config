@@ -15,7 +15,7 @@ mkdir -p $SOLR_PID_DIR
 cleanup(){
     rm -fr $SOLR_PID_DIR
     rm -rf $temp_dir
-    solr stop -p $SOLR_PORT
+    solr stop -p $SOLR_PORT || true
 }
 trap cleanup EXIT
 

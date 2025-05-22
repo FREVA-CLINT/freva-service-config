@@ -12,7 +12,7 @@ export SOLR_PID_DIR=/tmp/$SERVICE
 
 mkdir -p $SOLR_PID_DIR
 
-clenup(){
+cleanup(){
     rm -fr $SOLR_PID_DIR
     rm -rf $temp_dir
     solr stop -p $SOLR_PORT

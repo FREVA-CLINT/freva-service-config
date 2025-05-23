@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set  -o nounset -o pipefail -o errexit
+[ "$DEBUG" = "true" ] && set -x
 export SERVICE=solr
 
 temp_dir=$(mktemp -d)
@@ -44,8 +45,10 @@ for core in $SOLR_CORE latest;do
         curl http://localhost:$SOLR_PORT/solr/$core/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
     fi
     for file in managed-schema.xml synonyms.txt; do
-        rm -f "$DATA_DIR/$core/conf/$file" 2> /dev/null
-        cp "$CONFIG_DIR/$file" "$DATA_DIR/$core/conf/"
+        if [ ! -f "$DATA_DIR/$core/conf/$file" ];then
+            rm -f "$DATA_DIR/$core/conf/$file" /dev/null
+            cp "$CONFIG_DIR/$file" "$DATA_DIR/$core/conf/"
+        fi
     done
  done
 if $configure_solr ;then

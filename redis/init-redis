@@ -2,7 +2,7 @@
 #
 # Initialize the Freva Redis instance with TLS and ACL support.
 set  -o nounset -o pipefail -o errexit
-[ "$DEBUG" = "true" ] && set -x
+[ "${DEBUG:-}" = "true" ] && set -x
 export SERVICE=redis
 
 

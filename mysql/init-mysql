@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set  -o nounset -o pipefail -o errexit
-[ "$DEBUG" = "true" ] && set -x
+[ "${DEBUG:-}" = "true" ] && set -x
 export SERVICE=mysql
 
 temp_dir=$(mktemp -d)

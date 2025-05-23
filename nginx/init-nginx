@@ -2,7 +2,7 @@
 
 set -o nounset -o pipefail -o errexit
 
-[ "$DEBUG" = "true" ] && set -x
+[ "${DEBUG:-}" = "true" ] && set -x
 
 temp_dir=$(mktemp -d)
 trap "rm -rf '$temp_dir'" EXIT

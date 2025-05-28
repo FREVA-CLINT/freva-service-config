@@ -669,7 +669,7 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/*"
+        "*"
       ],
       "webOrigins": [
         "/*"

@@ -88,7 +88,7 @@ case "$SERVICE" in
         redis-cli ping | grep -q PONG
         ;;
     nginx)
-        curl -s https://localhost/ --insecure || exit 1
+        curl -s https://localhost:${NGINX_PORT:-443}/ --insecure || exit 1
         ;;
     *)
         echo "❌ Unknown service: $SERVICE" >&2

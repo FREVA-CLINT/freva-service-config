@@ -46,7 +46,7 @@ for core in $SOLR_CORE latest;do
     fi
     for file in managed-schema.xml synonyms.txt; do
         if [ ! -f "$DATA_DIR/$core/conf/$file" ];then
-            rm -f "$DATA_DIR/$core/conf/$file" /dev/null
+            rm -f "$DATA_DIR/$core/conf/$file"
             cp "$CONFIG_DIR/$file" "$DATA_DIR/$core/conf/"
         fi
     done

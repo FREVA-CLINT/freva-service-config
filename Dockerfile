@@ -52,7 +52,7 @@ RUN  set -eux && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \
      chmod 1777 -R /data /backup && \
-     rm -rf /tmp/app\
+     rm -rf /tmp/app
 
 # Install apt packages for system user lookup
 RUN apt-get update && \

@@ -47,11 +47,21 @@ RUN set -eu \
     --shell /usr/sbin/nologin \
     nobody
 
+# Install the mamba stuff
 RUN  set -eux && \
      micromamba install -c conda-forge -q -y --override-channels -f $SERVICE/requirements.txt && \
      micromamba clean -q -y -i -t -l -f && \
      chmod 1777 -R /data /backup && \
-     rm -rf /tmp/app
+     rm -rf /tmp/app\
+
+# Install apt packages for system user lookup
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libnss-sss \
+        libpam-sss \
+        sssd-common \
+        sssd-tools && \
+    rm -rf /var/lib/apt/lists*
 
 WORKDIR /data
 CMD ["/usr/local/bin/start-service"]

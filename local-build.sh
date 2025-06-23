@@ -7,22 +7,28 @@ trap "rm -rf $temp_dir" EXIT
 
 DO_CHECK=false
 SERVICE=""
+BUILD_CMD=podman
 
 # Parse arguments
 for arg in "$@"; do
   case "$arg" in
     --check) DO_CHECK=true ;;
     --service=*) SERVICE="${arg#*=}" ;;
+    --container-cmd=*) BUILD_CMD="${arg#*=}";;
     *) echo "❌ Unknown argument: $arg" >&2; exit 1 ;;
   esac
 done
 
 ### Detect docker or podman
-cmd=docker
-build_cmd="$cmd build --no-cache"
-if command -v podman > /dev/null; then
-  cmd=podman
-  build_cmd="$cmd build --format docker --no-cache"
+for _cmd in ${BUILD_CMD} docker podman; do
+    if command -v which $_cmd > /dev/null;then
+        cmd="$_cmd"
+        build_cmd="$cmd build --no-cache"
+        break
+    fi
+done
+if [ "${cmd}" = "podman" ];then
+    build_cmd="$cmd build --format docker --no-cache"
 fi
 CERT_FILE="${temp_dir}/fullchain.pem"
 KEY_FILE="${temp_dir}/privkey.pem"

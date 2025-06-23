@@ -78,7 +78,7 @@ http {
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Freva-Vault-URL "{{ env["VAULT_URL"] }}";
             proxy_set_header X-Freva-Project "{{ env["PROJECT_NAME"] }}";
-            proxy_set_header X-Freva-Rest-URL "https://{{ env.get("PROXY_HOST_NAME", "localhost") }};
+            proxy_set_header X-Freva-Rest-URL "https://{{ env.get("PROXY_HOST_NAME", "localhost") }}";
             proxy_set_header X-Freva-Config-Path "{{ env["EVALUATION_SYSTEM_CONFIG_FILE"] }}";
         }
 

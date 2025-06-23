@@ -11,6 +11,16 @@ ENV    PYTHONUNBUFFERED=1 \
        SERVICE=${SERVICE} \
        PATH=/opt/conda/bin:${PATH}
 
+
+# Install apt packages for system user lookup
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libnss-sss \
+        libpam-sss \
+        sssd-common \
+        sssd-tools && \
+    rm -rf /var/lib/apt/lists*
+
 WORKDIR /tmp/app
 COPY . /tmp/app
 
@@ -54,14 +64,6 @@ RUN  set -eux && \
      chmod 1777 -R /data /backup && \
      rm -rf /tmp/app
 
-# Install apt packages for system user lookup
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libnss-sss \
-        libpam-sss \
-        sssd-common \
-        sssd-tools && \
-    rm -rf /var/lib/apt/lists*
 
 WORKDIR /data
 CMD ["/usr/local/bin/start-service"]

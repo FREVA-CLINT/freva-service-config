@@ -28,7 +28,7 @@ bash local-build.sh --check
 
 ## Development Usage
 Development environments should submodule this repository. See the
-[freva-nextgen](https://github.com/FREVA-CLINT/freva-nextgen) as an example.
+[freva-nextgen](https://github.com/freva-org/freva-nextgen) as an example.
 
 ## Keycloak
 For development purpupose [Keycloak](https://www.keycloak.org) is pre configured

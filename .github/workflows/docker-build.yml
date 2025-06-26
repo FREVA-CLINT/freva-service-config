@@ -65,5 +65,5 @@ jobs:
           load: false
           no-cache: true
           tags: |
-            ghcr.io/freva-clint/freva-${{ matrix.service }}:latest
-            ghcr.io/freva-clint/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}
+            ghcr.io/freva-org/freva-${{ matrix.service }}:latest
+            ghcr.io/freva-org/freva-${{ matrix.service }}:${{ steps.version.outputs.version }}

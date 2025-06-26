@@ -4,7 +4,7 @@ ARG SERVICE
 ARG VERSION
 LABEL org.freva.service="$SERVICE"
 LABEL org.opencontainers.image.authors="DRKZ-CLINT"
-LABEL org.opencontainers.image.source="https://github.com/FREVA-CLINT/freva-nextgen/freva-rest"
+LABEL org.opencontainers.image.source="https://github.com/freva-org/freva-service-config"
 LABEL org.opencontainers.image.version="$VERSION"
 ENV    PYTHONUNBUFFERED=1 \
        IN_DOCKER=1 \

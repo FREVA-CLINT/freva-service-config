@@ -72,13 +72,13 @@ for service in "${SERVICES[@]}"; do
   $build_cmd \
     --build-arg=SERVICE=$service \
     --build-arg=VERSION=$version \
-    -t ghcr.io/freva-clint/freva-$service:latest \
-    -t ghcr.io/freva-clint/freva-$service:$version .
+    -t ghcr.io/freva-org/freva-$service:latest \
+    -t ghcr.io/freva-org/freva-$service:$version .
 
   if $DO_CHECK; then
     echo "🧪 Testing freva-$service ..."
     $cmd run --rm "${ENV_VARS[@]}" \
-      ghcr.io/freva-clint/freva-$service healthchecks
+      ghcr.io/freva-org/freva-$service healthchecks
   fi
 done
 

@@ -5,8 +5,13 @@ set -o nounset -o pipefail -o errexit
 [ "${DEBUG:-}" = "true" ] && set -x
 
 temp_dir=$(mktemp -d)
-trap "rm -rf '$temp_dir'" EXIT
+cleanup() {
+  echo "Removing temp dir: $temp_dir" >&2
+  rm -rf "$temp_dir"
+}
 
+
+trap cleanup EXIT
 export SERVICE=nginx
 
 # Download mime.types if not present
